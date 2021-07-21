@@ -1,0 +1,274 @@
+{% load static %}
+<!-- desktop site__header -->
+<header class="site__header d-lg-block d-none">
+  <div class="site-header">
+    <!-- .topbar -->
+    <div class="site-header__topbar topbar">
+      <div class="topbar__container container">
+        <div class="topbar__row">
+          <div class="topbar__item topbar__item--link">
+            <a class="topbar-link"
+              href="{% url 'customer-products' %}">Бүтээгдэхүүн</a>
+          </div>
+          <div class="topbar__item topbar__item--link">
+            <a class="topbar-link"
+              href="{% url 'customer-order' %}">Захиалга хийх</a>
+          </div>
+          <div class="topbar__item topbar__item--link">
+            <a class="topbar-link"
+              href="{% url 'customer-track-order' %}">Захиалга хянах</a>
+          </div>
+          {% comment %}
+          <div class="topbar__item topbar__item--link">
+            <a class="topbar-link"
+              href="{% url 'customer-posts' %}">Нийтлэл</a>
+          </div>
+          {% endcomment %}
+          <div class="topbar__item topbar__item--link">
+            <a class="topbar-link"
+              href="{% url 'customer-contact-us' %}">Холбоо барих</a>
+          </div>
+          <div class="topbar__spring"></div>
+          <div class="topbar__item">
+            <div class="topbar-dropdown">
+              <button class="topbar-dropdown__btn"
+                type="button">
+                Тавтай морилно уу <b>{{ user.customer.name|upper }}</b>
+              </button>
+            </div>
+            <div class="topbar-dropdown">
+              <button class="topbar-dropdown__btn"
+                type="button"> Миний мэдээлэл
+                <svg width="7px"
+                  height="5px">
+                  <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-down-7x5"></use>
+                </svg>
+              </button>
+              <div class="topbar-dropdown__body">
+                <!-- .menu -->
+                <div class="menu menu--layout--topbar">
+                  <div class="menu__submenus-container"></div>
+                  <ul class="menu__list">
+                    <li class="menu__item">
+                      <div class="menu__item-submenu-offset"></div>
+                      <a class="menu__item-link"
+                        href="{% url 'customer-password-change' %}">Нууц үг солих</a>
+                    </li>
+                    <li class="menu__item">
+                      <div class="menu__item-submenu-offset"></div>
+                      <a class="menu__item-link"
+                        href="{% url 'customer-logout' %}">
+                        Системээс гарах
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <!-- .menu / end -->
+              </div>
+            </div>
+            <div class="topbar-dropdown">
+              <button class="topbar-dropdown__btn"
+                type="button">
+                <b>
+                  <i class="fa fa-trophy"></i>
+                  {{ user.customer.customer_category|default:"Iron" }}
+                </b>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- .topbar / end -->
+    <div class="site-header__middle container">
+      <div class="site-header__logo">
+        <a href="{% url 'customer-home' %}">
+          <img src="{% static 'customer/images/logo.png' %}"
+            alt="Monos LLC"
+            width="200">
+        </a>
+      </div>
+      <div class="site-header__search">
+        <div class="search">
+          <form class="search__form"
+            action="{% url 'customer-products' %}">
+            <input class="search__input"
+              name="search"
+              placeholder="10000 гаруй нэр төрлийн бүтээгдэхүүнээс хайх"
+              aria-label="Site search"
+              type="text"
+              autocomplete="off">
+            <button class="search__button"
+              type="submit">
+              <svg width="20px"
+                height="20px">
+                <use xlink:href="{% static 'customer/images/sprite.svg' %}#search-20"></use>
+              </svg>
+            </button>
+            <div class="search__border"></div>
+          </form>
+        </div>
+      </div>
+      <div class="site-header__phone">
+        <div class="site-header__phone-title">Харилцагчийн туслах</div>
+        <div class="site-header__phone-number">(976) 70122142</div>
+      </div>
+      <div class="site-header__phone">
+        <img width="80"
+          src="
+          {% if request.user.customer.customer_category.name == 'DIAMOND' %}
+          {% static 'customer/images/customer/Diamond.png' %}
+          {% elif request.user.customer.customer_category.name == 'PLATINUM' %}
+          {% static 'customer/images/customer/Platinum.png' %}
+          {% elif request.user.customer.customer_category.name == 'GOLD' %}
+          {% static 'customer/images/customer/Gold.png' %}
+          {% elif request.user.customer.customer_category.name == 'SILVER' %}
+          {% static 'customer/images/customer/Silver.png' %}
+          {% elif request.user.customer.customer_category.name == 'BRONZE' %}
+          {% static 'customer/images/customer/Bronze.png' %}
+          {% else %}
+          {% static 'customer/images/customer/Iron.png' %}
+          {% endif %}
+          " />
+      </div>
+    </div>
+    <div class="site-header__nav-panel">
+      <!-- data-sticky-mode - one of [pullToShow, alwaysOnTop] -->
+      <div class="nav-panel nav-panel--sticky"
+        data-sticky-mode="alwaysOnTop">
+        <div class="nav-panel__container container">
+          <div class="nav-panel__row">
+            <div class="nav-panel__departments">
+              <!-- .departments -->
+              <div class="departments"
+                data-departments-fixed-by="">
+                <div class="departments__body">
+                  <div class="departments__links-wrapper">
+                    <div class="departments__submenus-container"></div>
+                    <ul class="departments__links">
+                      {% for id, category in categories.items %}
+                      <li class="departments__item">
+                        <a class="departments__item-link"
+                          href="{% url 'customer-products' id %}">
+                          {{ category.name }}
+                          {% if category.sub_categories %}
+                          <svg class="
+                          departments__item-arrow"
+                            width="6px"
+                            height="9px">
+                            <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+                          </svg>
+                          {% endif %}
+                        </a>
+                        {% if category.sub_categories %}
+                        <div
+                          class="departments__submenu departments__submenu--type--megamenu departments__submenu--size--xl">
+                          <!-- .megamenu -->
+                          <div class="megamenu megamenu--departments">
+                            <div class="megamenu__body">
+                              <div class="row">
+                                {% for id, name in category.sub_categories.items %}
+                                <div class="col-3">
+                                  <ul class="megamenu__links megamenu__links--level--0">
+                                    <li style="list-style: circle;"
+                                      class="megamenu__item">
+                                      <a href="{% url 'customer-products' id %}">{{ name }}</a>
+                                    </li>
+                                  </ul>
+                                </div>
+                                {% endfor %}
+                              </div>
+                            </div>
+                          </div>
+                          <!-- .megamenu / end -->
+                        </div>
+                        {% endif %}
+                      </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+                <button class="departments__button">
+                  <svg class="departments__button-icon"
+                    width="18px"
+                    height="14px">
+                    <use xlink:href="{% static 'customer/images/sprite.svg' %}#menu-18x14"></use>
+                  </svg> Ангилал
+                  <svg class="departments__button-arrow"
+                    width="9px"
+                    height="6px">
+                    <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-down-9x6"></use>
+                  </svg>
+                </button>
+              </div>
+              <!-- .departments / end -->
+            </div>
+            <!-- .nav-links -->
+            <div class="nav-panel__nav-links nav-links">
+              <ul class="nav-links__list">
+                <li class="nav-links__item">
+                  <a class="nav-links__item-link"
+                    href="{% url 'customer-home' %}">
+                    <div class="nav-links__item-body">Нүүр</div>
+                  </a>
+                </li>
+                <li class="nav-links__item">
+                  <a class="nav-links__item-link"
+                    href="{% url 'customer-products' %}">
+                    <div class="nav-links__item-body">Бүтээгдэхүүн</div>
+                  </a>
+                </li>
+                <li class="nav-links__item">
+                  <a class="nav-links__item-link"
+                    href="{% url 'customer-order' %}">
+                    <div class="nav-links__item-body">Захиалга хийх</div>
+                  </a>
+                </li>
+                <li class="nav-links__item">
+                  <a class="nav-links__item-link"
+                    href="{% url 'customer-track-order' %}">
+                    <div class="nav-links__item-body">Захиалга хянах</div>
+                  </a>
+                </li>
+                <li class="nav-links__item">
+                  <a class="nav-links__item-link"
+                    href="{% url 'customer-posts' %}">
+                    <div class="nav-links__item-body">Нийтлэл</div>
+                  </a>
+                </li>
+                <li class="nav-links__item">
+                  <a class="nav-links__item-link"
+                    href="{% url 'customer-contact-us' %}">
+                    <div class="nav-links__item-body">Холбоо барих</div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <!-- .nav-links / end -->
+            <div class="nav-panel__indicators">
+              {% comment %}
+              <div class="indicator">
+                <a href="#"
+                  class="indicator__button">
+                  <span class="indicator__area">
+                    <svg width="20px"
+                      height="20px">
+                      <use xlink:href="{% static 'customer/images/sprite.svg' %}#heart-20"></use>
+                    </svg>
+                    <span class="indicator__value">0</span>
+                  </span>
+                </a>
+              </div>
+              {% endcomment %}
+              <div id="cart-header"
+                class="indicator indicator--trigger--click">
+                {% include 'customer/include/cart.html' %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- desktop site__header / end -->

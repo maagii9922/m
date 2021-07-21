@@ -1,0 +1,64 @@
+{% load table_tags %}
+
+<div class="row row-xs">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-sm"
+            style="font-size: 12px">
+            <thead>
+              <tr>
+                <th>#</th>
+                {% for header in headers %}
+                <th>{{ header }}</th>
+                {% endfor %}
+                <th>Үйлдэл</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <form method="GET">
+                  <td></td>
+                  {{ filter_form.media }}
+                  {% for field in filter_form %}
+                  <td>{{ field }}</td>
+                  {% endfor %}
+                  <td class="text-nowrap">
+                    <button type="submit"
+                      class="btn btn-white btn-sm btn-uppercase">
+                      <i data-feather="search"></i>
+                      Хайх
+                    </button>
+                    <a href="{{ request.path }}"
+                      onclick=""
+                      class="btn btn-white btn-sm btn-uppercase">
+                      <i data-feather="x"></i>
+                      Цэвэрлэх
+                    </a>
+                  </td>
+                </form>
+              </tr>
+              {% for row in rows %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                {% for r in row %}
+                <td>{{ r|safe }}</td>
+                {% endfor %}
+              </tr>
+              {% empty %}
+              <tr>
+                <td></td>
+                <td colspan="100">Жагсаалт хоосон байна</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% if is_paginated %}
+        {% end_pagination page_obj %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

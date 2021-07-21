@@ -1,0 +1,186 @@
+({% extends 'employee/core/base.html' %}
+
+{% load bootstrap4 static %}
+
+{% block content %}
+<style>
+  .categoryDiv {
+    display: none;
+  }
+</style>
+<div class="content-body">
+  <div class="container pd-x-0">
+
+    <div class="d-sm-flex align-items-center justify-content-between mg-b-20 mg-lg-b-25 mg-xl-b-30">
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-style3 mg-b-10">
+            {% for breadcrumb, link in breadcrumbs %}
+            {% if not forloop.last %}
+            <li class="breadcrumb-item">
+              <a href="{{ link }}">{{ breadcrumb }}</a>
+            </li>
+            {% else %}
+            <li class="breadcrumb-item active">{{ breadcrumb }}</li>
+            {% endif %}
+            {% endfor %}
+          </ol>
+        </nav>
+        <h4 class="mg-b-0 tx-spacing--1">{{ page_title }}</h4>
+      </div>
+      {% if add_url %}
+      <div class="d-none d-md-block">
+        <a style="color:white;"
+          href="{{ add_url }}"
+          class="btn btn-sm pd-x-15 btn-primary btn-uppercase mg-l-5">
+          <i data-feather="plus"
+            class="wd-10 mg-r-5"></i> Нэмэх
+        </a>
+      </div>
+      {% endif %}
+    </div>
+
+    <form id="advertisementForm"
+      method="POST"
+      enctype="multipart/form-data">
+      {% csrf_token %}
+      <div id="wizard1">
+        <h3>Ерөнхий мэдээлэл</h3>
+        <section>
+          {% for error in form.non_field_errors %}
+          <div class="alert alert-danger">
+            {{ error }}
+          </div>
+          {% endfor %}
+          {% bootstrap_field form.name layout='horizontal' %}
+          {% bootstrap_field form.image layout='horizontal' %}
+          {% bootstrap_field form.description layout='horizontal' %}
+        </section>
+        <h3>Тохиргоо</h3>
+        <section>
+          <div class="form-group row">
+            <div class="col-md-3">
+              <label for=""
+                class="col-form-label">Хэрэгжүүлэх төрөл</label>
+            </div>
+            <div class="col-md-9 implement-type">
+              {% for value, text in form.implement_type.field.choices %}
+              {% if not forloop.first %}
+              <div class="custom-control custom-radio">
+                <input class="custom-control-input"
+                  name="{{ form.implement_type.name }}"
+                  id="{{ form.implement_type.auto_id }}_{{ forloop.counter0 }}"
+                  type="radio"
+                  value='{{ value }}'
+                  {% if not form.is_bound %}
+                  {% ifequal form.implement_type.initial value %}
+                  checked
+                  {% endifequal %}
+                  {% else %}
+                  {% ifequal form.implement_type.data value %}
+                  checked
+                  {% endifequal %}
+                  {% endif %} />
+                <label class="custom-control-label"
+                  for='{{ form.implement_type.auto_id }}_{{ forloop.counter0 }}'>
+                  {{ text }}
+                </label>
+              </div>
+              {% endif %}
+              {% endfor %}
+              {% for error in form.implement_type.errors %}
+              <div class="invalid-feedback">{{ error }} </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div id="show-1"
+            class="categoryDiv"></div>
+          <div id="show-2"
+            class="categoryDiv">
+            <div class="form-group row">
+              <label class="col-md-3"
+                for="{{ form.customer_categories.auto_id }}">
+                {{ form.customer_categories.label }}
+              </label>
+              <div class="col-md-9">
+                {{ form.customer_categories }}
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-3"></div>
+              <div class="col-md-9">
+                <div class="custom-control custom-switch">
+                  {{ form.is_implement_1 }}
+                  <label class="custom-control-label"
+                    for="{{ form.is_implement_1.auto_id }}">
+                    Хэрэгжүүлэхгүй/Хэрэгжүүлнэ
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="show-3"
+            class="categoryDiv">
+            <div class="form-group row">
+              <label class="col-md-3"
+                for="{{ form.customers.auto_id }}">
+                {{ form.customers.label }}
+              </label>
+              <div class="col-md-9">
+                {{ form.customers }}
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-3"></div>
+              <div class="col-md-9">
+                <div class="custom-control custom-switch">
+                  {{ form.is_implement_2 }}
+                  <label class="custom-control-label"
+                    for="{{ form.is_implement_2.auto_id }}">
+                    Хэрэгжүүлэхгүй/Хэрэгжүүлнэ
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="show-4"
+            class="categoryDiv">
+            <div class="form-group row">
+              <label class="col-md-3"
+                for="{{ form.warehouses.auto_id }}">
+                {{ form.warehouses.label }}
+              </label>
+              <div class="col-md-9">
+                {{ form.warehouses }}
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-3"></div>
+              <div class="col-md-9">
+                <div class="custom-control custom-switch">
+                  {{ form.is_implement_3 }}
+                  <label class="custom-control-label"
+                    for="{{ form.is_implement_3.auto_id }}">
+                    Хэрэгжүүлэхгүй/Хэрэгжүүлнэ
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <h3>Баталгаажуулалт</h3>
+        <section>
+          <p class="mg-b-20">Сурталчилгааг хадгалах уу?</p>
+        </section>
+      </div>
+    </form>
+
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script src="{% static 'employee/lib/jquery-steps/build/jquery.steps.min.js' %}"></script>
+<script src="{% static 'employee/lib/parsleyjs/parsley.min.js' %}"></script>
+<script src="{% static 'employee/js/advertisement.js' %}"></script>
+{{ form.media }}
+{% endblock %}

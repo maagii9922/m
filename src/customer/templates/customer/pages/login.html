@@ -1,0 +1,107 @@
+{% load static bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en"
+  dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1">
+  <meta name="format-detection"
+    content="telephone=no">
+  <title>Онлайн захиалгын систем</title>
+  <link rel="icon"
+    type="image/png"
+    href="images/favicon.png">
+  <!-- fonts -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i">
+  <!-- css -->
+  <link rel="stylesheet"
+    href="{% static 'customer/vendor/bootstrap-4.2.1/css/bootstrap.min.css' %}">
+  <link rel="stylesheet"
+    href="{% static 'customer/vendor/owl-carousel-2.3.4/assets/owl.carousel.min.css' %}">
+  <link rel="stylesheet"
+    href="{% static 'customer/css/style.css' %}">
+  <!-- js -->
+  <script src="{% static 'customer/vendor/jquery-3.3.1/jquery.min.js' %}"></script>
+  <script src="{% static 'customer/vendor/bootstrap-4.2.1/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'customer/vendor/owl-carousel-2.3.4/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'customer/vendor/nouislider-12.1.0/nouislider.min.js' %}"></script>
+  <script src="{% static 'customer/js/number.js' %}"></script>
+  <script src="{% static 'customer/js/main.js' %}"></script>
+  <script src="{% static 'customer/js/header.js' %}"></script>
+  <script src="{% static 'customer/vendor/svg4everybody-2.1.9/svg4everybody.min.js' %}"></script>
+  <script>svg4everybody();</script>
+  <!-- font - fontawesome -->
+  <link rel="stylesheet"
+    href="{% static 'customer/vendor/fontawesome-5.6.1/css/all.min.css' %}">
+  <!-- font - stroyka -->
+  <link rel="stylesheet"
+    href="{% static 'customer/fonts/stroyka/stroyka.css' %}">
+</head>
+
+<body>
+
+  <div class="site"
+    style="background: #eeeeee;">
+    <div class="site__body">
+      <div class="block">
+        <div class="container">
+          <div class="row">
+            <div class="offset-md-4 col-md-4">
+              <img src="{% static 'customer/images/logo.png' %}"
+                alt=""
+                style="width: 100%; padding-top: 50px;">
+            </div>
+            <div class="offset-md-3 col-md-6 d-flex"
+              style="padding-top: 50px;">
+              <div class="card flex-grow-1 mb-md-0">
+                <div class="card-body">
+                  <h3 class="card-title">Нэвтрэх</h3>
+                  <form method="POST">{% csrf_token %}
+                    {% bootstrap_form form show_label=False %}
+                    <small>
+                      <a href="">Нууц үгээ мартсан?</a>
+                    </small><br>
+                    <button type="submit"
+                      class="btn btn-primary btn-lg mt-4">Нэвтрэх</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Facebook SDK for JavaScript -->
+  <div id="fb-root"></div>
+  <script>
+    window.fbAsyncInit = function () {
+      FB.init({
+        xfbml: true,
+        version: 'v5.0'
+      });
+    };
+
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+  <!-- Your customer chat code -->
+  <div class="fb-customerchat"
+    attribution=setup_tool
+    page_id="110878133657816"
+    theme_color="#ffd333"
+    logged_in_greeting="Сайн байна уу? Бид танд хэрхэн туслах вэ?"
+    logged_out_greeting="Сайн байна уу? Бид танд хэрхэн туслах вэ?">
+  </div>
+</body>
+
+</html>

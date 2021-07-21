@@ -1,0 +1,139 @@
+<div class="modal-body pd-20 pd-sm-40">
+  <a href=""
+    role="button"
+    class="close pos-absolute t-15 r-15"
+    data-dismiss="modal"
+    aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </a>
+
+  <div>
+    <h4>Урамшууллын дэлгэрэнгүй</h4>
+    <ul class="list-group list-group-flush mg-t-10 tx-13">
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Нэр:</span>
+        <span class="tx-rubik">{{ object.name }}</span>
+      </li>
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Огноо:</span>
+        <span class="tx-rubik">{{ object.get_date }}</span>
+      </li>
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Хэрэгжүүлэх дараалал:</span>
+        <span class="tx-rubik">{{ object.order }}</span>
+      </li>
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Тайлбар</span>
+        <span class="tx-rubik">{{ object.description|default:"-" }}</span>
+      </li>
+      <!--Урамшууллын төрөл-->
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Урамшууллын төрөл</span>
+        <span class="tx-rubik">{{ object.get_promotion_type_display }}</span>
+      </li>
+      <!--Урамшууллын төрөл-->
+
+      <!--Uramshuulliin turul buteegdehuuneer-->
+      {% if object.promotion_type == 1 %}
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Бүтээгдэхүүнд хэрэгжих</span>
+        <span class="tx-rubik">{{ object.get_product_type_display }}</span>
+      </li>
+      {% if object.product_type != 1 %}
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Сонгогдсон бүтээгдэхүүнүүд:</span>
+        <span class="tx-rubik">
+          <ul>
+            {% for product in object.products.all %}
+            <li>{{ product.name }}</li>
+            {% endfor %}
+          </ul>
+        </span>
+      </li>
+      {% endif %}
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Урамшуулал хэрэгжих төрөл:</span>
+        <span class="tx-rubik">{{ object.get_promotion_implement_type_display }}</span>
+      </li>
+      {% if object.percent and not object.above_the_number %}
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Хувь:</span>
+        <span class="tx-rubik">{{ object.percent }}%</span>
+      </li>
+      {% endif %}
+      {% if object.price %}
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Үнэ:</span>
+        <span class="tx-rubik">{{ object.price }}₮</span>
+      </li>
+      {% endif %}
+      {% if object.above_the_number %}
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Тооноос дээш:</span>
+        <span class="tx-rubik">{{ object.above_the_number }}ш</span>
+      </li>
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Хувь:</span>
+        <span class="tx-rubik">{{ object.percent }}%</span>
+      </li>
+      {% endif %}
+      {% endif %}
+      <!--Uramshuulliin turul buteegdehuuneer-->
+
+
+
+      <!--Uramshuulliin heregjuuleh-->
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Хэрэгжүүлэх төрөл:</span>
+        <span class="tx-rubik">{{ object.get_implement_type_display }}</span>
+      </li>
+      {% if object.implement_type == 2 %}
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Харилчагчийн төрөл:</span>
+        <span class="tx-rubik">
+          <ul>
+            {% for category in object.customer_categories.all %}
+            <li>{{ category.name }}</li>
+            {% endfor %}
+          </ul>
+        </span>
+      </li>
+      {% elif object.implement_type == 3 %}
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Харилцагчид:</span>
+        <span class="tx-rubik">
+          <ul>
+            {% for customer in object.customers.all %}
+            <li>{{ customer.name }}</li>
+            {% endfor %}
+          </ul>
+        </span>
+      </li>
+      {% elif object.implement_type == 4 %}
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Агуулахууд:</span>
+        <span class="tx-rubik">
+          <ul>
+            {% for warehouse in object.warehouses.all %}
+            <li>{{ warehouse.name }}</li>
+            {% endfor %}
+          </ul>
+        </span>
+      </li>
+      {% endif %}
+
+      <li class="list-group-item pd-x-0 d-flex justify-content-between">
+        <span class="tx-medium">Хэрэгжүүлнэ / Хэрэгжүүлэхгүй:</span>
+        <span class="tx-rubik">
+          {% if object.is_implement %}
+          Хэрэгжүүлнэ
+          {% else %}
+          Хэрэгжүүлэхгүй
+          {% endif %}
+        </span>
+      </li>
+      <!--Uramshuulliin heregjuuleh-->
+
+    </ul>
+  </div>
+</div>

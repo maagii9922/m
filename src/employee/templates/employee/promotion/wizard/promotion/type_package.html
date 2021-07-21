@@ -1,0 +1,85 @@
+{% extends 'employee/core/base.html' %}
+{% load static i18n bootstrap4 %}
+
+{% block content %}
+<div class="content-body">
+  <div class="container pd-x-0">
+    {% include 'employee/promotion/wizard/header.html' %}
+    <form id="promotionForm"
+      method="POST"
+      enctype="multipart/form-data">
+      {% csrf_token %}
+      <div id="wizard"
+        role="application"
+        class="wizard clearfix">
+        {% include 'employee/promotion/wizard/steps.html' %}
+        <div class="content clearfix">
+          <h3>Багцын тохиргоо</h3>
+          <section id="wizard-p-0"
+            role="tabpanel"
+            aria-labelledby="wizard-h-0"
+            class="body current"
+            aria-hidden="false">
+            {{ wizard.management_form }}
+            {% if wizard.form.forms %}
+            {{ wizard.form.management_form }}
+            {% for form in wizard.form.forms %}
+            {% bootstrap_form form layout="horizontal" %}
+            {% endfor %}
+            {% else %}
+            {% bootstrap_form wizard.form layout="horizontal" %}
+            {% endif %}
+          </section>
+        </div>
+        {% include 'employee/promotion/wizard/buttons.html' %}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.min.js"></script>
+<script>
+  $(document).ready(function () {
+
+    $(".package_formset_row").formset({
+      addText: "Бүтээгдэхүүн нэмэх",
+      deleteText: "Устгах",
+      prefix: "promotion_products",
+      added: function (row) {
+        $(row.find(".select2")).each(function () {
+          url = $(this).attr("data-ajax--url");
+          $(this).select2({
+            ajax: {
+              url: url,
+              data: function (params) {
+                return {
+                  term: params.term,
+                  page: params.page
+                };
+              }
+            },
+            width: "100%"
+          });
+        });
+      }
+    });
+
+    $(".select2").each(function () {
+      var url = $(this).attr("data-ajax--url");
+      $(this).select2({
+        ajax: {
+          url: url,
+          data: function (params) {
+            return {
+              term: params.term,
+              page: params.page
+            };
+          }
+        },
+        width: "100%"
+      });
+    });
+  })
+</script>
+{% endblock %}

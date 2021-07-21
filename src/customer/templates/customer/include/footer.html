@@ -1,0 +1,124 @@
+{% load static %}
+
+<!-- site__footer -->
+<footer class="site__footer">
+  <div class="site-footer">
+    <div class="container">
+      <div class="site-footer__widgets">
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-5">
+            <div class="site-footer__widget footer-contacts">
+              <h5 class="footer-contacts__title">Бидэнтэй холбогдох</h5>
+              <ul class="footer-contacts__contacts">
+                <li>
+                  <i class="footer-contacts__icon fas fa-globe-americas"></i>
+                  ЭХНТөвийн (Эм ханган нийлүүлэх төв) хаяг – Улаанбаатар хот, Чингэлтэй дүүрэг, 2-р хороо, Жуулчны
+                  гудамж, Капитал центр 201 тоот
+                  <br>
+                  <br>
+                  ОХНТөвийн хаяг ( Оношлуур ханган нийлүүлэх төв) - Улаанбаатар хот, Чингэлтэй дүүрэг, 2-р хороо,
+                  Жуулчны
+                  гудамж, Капитал центр 202 тоот
+                </li>
+                <li>
+                  <i class="footer-contacts__icon far fa-envelope"
+                    style="margin-top: 10px; margin-bottom:10px;"></i>
+
+                  sales@monos.mn
+
+                </li>
+                <li>
+                  <i class="footer-contacts__icon fas fa-mobile-alt"></i>
+                  Утас : 70122142, 99715499, 88163000
+                  <br>
+                  <br>
+                  <i class="footer-contacts__icon fas fa-mobile-alt"></i>
+                  Оношлуур ханган нийлүүлэх : 70112142, 94032142
+
+                </li>
+                <!-- <li>
+                  <i class="footer-contacts__icon far fa-clock"></i>
+                  Дав-Баа 08:30 - 17:30
+                </li> -->
+              </ul>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="site-footer__widget footer-links">
+              <h5 class="footer-links__title">Түргэн холбоос</h5>
+              <ul class="footer-links__list">
+                <li class="footer-links__item">
+                  <a href="{% url 'customer-terms-and-conditions' %}"
+                    class="footer-links__link">Үйлчилгээний нөхцөл</a>
+                </li>
+                <li class="footer-links__item">
+                  <a href="{% url 'customer-privacy-policy' %}"
+                    class="footer-links__link">Нууцлалын бодлого</a>
+                </li>
+                <li class="footer-links__item">
+                  <a href="{% url 'customer-order' %}"
+                    class="footer-links__link">Захиалга хийх</a>
+                </li>
+                <li class="footer-links__item">
+                  <a href="{% url 'customer-track-order' %}"
+                    class="footer-links__link">Захиалга хянах</a>
+                </li>
+                <li class="footer-links__item">
+                  <a href="{% url 'customer-posts' %}"
+                    class="footer-links__link">Нийтлэл</a>
+                </li>
+                <li class="footer-links__item">
+                  <a href="{% url 'customer-contact-us' %}"
+                    class="footer-links__link">Холбоо барих</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-12 col-md-12 col-lg-4">
+            <div class="site-footer__widget footer-newsletter">
+              <h5 class="footer-newsletter__title">Санал хүсэлт</h5>
+              {% for message in messages %}
+              <div class="alert alert-success">
+                {{ message }}
+              </div>
+              {% endfor %}
+              <form action="{% url 'create_feedback' %}"
+                method="POST">{% csrf_token %}
+                <div class="form-group">
+                  <input type="text"
+                    name="subject"
+                    class="form-control"
+                    placeholder="Гарчиг"
+                    required="true">
+                </div>
+                <div class="form-group">
+                  <textarea name="message"
+                    class="form-control"
+                    rows="2"
+                    required="true"></textarea>
+                </div>
+                <button class="btn btn-primary">Илгээх</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="totop">
+      <div class="totop__body">
+        <div class="totop__start"></div>
+        <div class="totop__container container"></div>
+        <div class="totop__end">
+          <button type="button"
+            class="totop__button">
+            <i class="fa fa-arrow-up"></i>
+            <!-- <svg width="13px" height="8px">
+              <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-up-8x13"></use>
+            </svg> -->
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- site__footer / end -->

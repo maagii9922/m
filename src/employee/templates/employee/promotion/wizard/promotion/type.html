@@ -1,0 +1,42 @@
+{% extends 'employee/core/base.html' %}
+{% load static i18n bootstrap4 %}
+
+{% block content %}
+<div class="content-body">
+  <div class="container pd-x-0">
+
+    {% include 'employee/promotion/wizard/header.html' %}
+    <form id="promotionForm"
+      method="POST"
+      enctype="multipart/form-data">
+      {% csrf_token %}
+      <div id="wizard"
+        role="application"
+        class="wizard clearfix">
+        {% include 'employee/promotion/wizard/steps.html' %}
+        <div class="content clearfix">
+          <h3>Урамшууллын төрөл сонгох</h3>
+          <section id="wizard-p-0"
+            role="tabpanel"
+            aria-labelledby="wizard-h-0"
+            class="body current"
+            aria-hidden="false">
+            {{ wizard.management_form }}
+            {% if wizard.form.forms %}
+            {{ wizard.form.management_form }}
+            {% for form in wizard.form.forms %}
+            {{ form.media }}
+            {% bootstrap_form form layout="horizontal" %}
+            {% endfor %}
+            {% else %}
+            {{ wizard.form.media }}
+            {% bootstrap_form wizard.form layout="horizontal" %}
+            {% endif %}
+          </section>
+        </div>
+        {% include 'employee/promotion/wizard/buttons.html' %}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

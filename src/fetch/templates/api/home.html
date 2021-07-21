@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+</head>
+
+<body>
+  <ul>
+    <li><a href="{% url 'fetch:update_company' %}">Компани татах</a></li>
+    <li><a href="{% url 'fetch:update_warehouse' %}">Агуулах татах</a></li>
+    <li><a href="{% url 'fetch:update_position' %}">Албан тушаал татах</a></li>
+    <li><a href="{% url 'fetch:update_employee' %}">Ажилчин татах</a></li>
+    <li><a href="{% url 'fetch:update_customer' %}">Бүх харилцагч татах</a></li>
+    <li><a href="{% url 'fetch:update_company_customer' %}">Компанийн харилцагч татах</a></li>
+    <li>
+      <a href="{% url 'fetch:update_product_category' %}">
+        Бүтээгдэхүүний ангилал татах
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'fetch:update_measuring_type' %}">
+        Хэмжих нэгж татах
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'fetch:update_product_form' %}">
+        Эмийн хэлбэр
+      </a>
+    </li>
+    <li><a href="{% url 'fetch:update_product' %}">Бүтээгдэхүүн татах</a></li>
+    <li>
+      <a href="{% url 'fetch:update_product_price' %}">
+        Бүтээгдэхүүний үнэ татах
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'fetch:update_product_stock' %}">
+        Бүтээгдэхүүний үлдэгдэл татах
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'fetch:order' %}">
+        Захиалга хийх
+      </a>
+    </li>
+
+    <li>
+      <a href="{% url 'fetch:update_company_warehouse_product_price' 63 607 %}">
+        Эрдэнэт бүтээгдэхүүний үнэ татах
+      </a>
+    </li>
+
+    <li>
+      <a href="{% url 'fetch:update_company_warehouse_product_stock' 607 %}">
+        Эрдэнэт нөөц татах
+      </a>
+    </li>
+
+    <li>
+      <a href="{% url 'fetch:update_company_warehouse_product_price' 62 605 %}">
+        Дархан бүтээгдэхүүний үнэ татах
+      </a>
+    </li>
+
+    <li>
+      <a href="{% url 'fetch:update_company_warehouse_product_stock' 605 %}">
+        Дархан нөөц татах
+      </a>
+    </li>
+  </ul>
+</body>
+
+</html>

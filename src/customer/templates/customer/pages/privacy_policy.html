@@ -1,0 +1,78 @@
+{% extends 'customer/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="site__body">
+  <div class="page-header">
+    <div class="page-header__container container">
+      <div class="page-header__breadcrumb">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'customer-home' %}">Нүүр</a>
+              <svg class="breadcrumb-arrow"
+                width="6px"
+                height="9px">
+                <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+              </svg>
+            </li>
+            <li class="breadcrumb-item active"
+              aria-current="page">Нууцлалын бодлого</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="container">
+      <div class="document">
+        <div class="document__header">
+          <h1 class="document__title">Нууцлалын бодлого</h1>
+          <!-- <div class="document__subtitle">This Agreement was last modified on 27 May 2018.</div> -->
+        </div>
+        <div class="document__content typography">
+          <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis neque ut purus fermentum, ac
+            pretium nibh facilisis. Vivamus venenatis viverra iaculis. Suspendisse tempor orci non sapien ullamcorper
+            dapibus. Suspendisse at velit diam. Donec pharetra nec enim blandit vulputate. Suspendisse potenti.
+            Pellentesque et molestie ante. In feugiat ante vitae ultricies malesuada.</p> -->
+          <ol>
+            <li>
+              Харилцагчтай холбоотой мэдээлэл нь sales.monos.mn – ний үнэт зүйл болно. Бидний зүгээс аюулгүй байдлыг
+              дээд зэргээр анхааран ажиллах бөгөөд гурав дахь этгээдэд харилцагчийн мэдээллийг ашгийн төлөө худалдахгүй
+              болно.
+            </li>
+            <li>
+              Харилцагчийн өгөгдөл бүрдүүлснээр харилцагчийн худалдан авалт бүрийн хүргэлт зөв цэгтээ, зөв хүндээ очиж
+              байх нөхцөлийг хангахын тулд, онлайн худалдан авалт хийх туршлагыг нэмэгдүүлэх, үйлчилгээний чанарыг
+              сайжруулах явдал юм.
+            </li>
+            <li>
+              Та sales.monos.mn сайтад өөрийн үнэн зөв мэдээллээ бүртгүүлснээр та шинэ хямдрал урамшууллын мэдээлэл авах
+              боломжтой бөгөөд харилцагч өөрөө хүсэхгүй тохиолдолд sales.monos.mn – д хүсэлт гарган ямар нэг
+              төлбөргүйгээр тухайн худалдааны санал, урамшууллын мэдээллээс чөлөөлөгдөх эрхтэй.
+            </li>
+            <li>
+              Sales.monos.mn – д цугларсан харилцагчийн өгөгдөлд тулгуурлан онлайн худалдаа үйлчилгээний чанарыг
+              сайжруулах бөгөөд тухайн өгөгдөлд үндэслэн гарсан мэдээллийг хэрэглэгчдээс урьдчилан зөвшөөрөл авсны дагуу
+              Sales.monos.mn өөрийн бизнес хамтрагчдад танилцуулах боломжтой
+            </li>
+            <li>
+              Хувийн мэдээлэл нь таны өөрийн нууц үгээр хамгаалагдах тул харилцагчид өөрийн онлайн худалдан авалтад
+              ашигладаг нууц үгийн нууцлал болон аюулгүй байдлын өмнө хариуцлага хүлээнэ.
+            </li>
+            <li>
+              Харилцагч ямар нэгэн байдлаар Sales.monos.mn сайт дээр үүссэн өөрийн хэрэглэгчийн бүртгэл эрсдэлд орсон
+              гэж үзсэн тохиолдолд sales.monos.mn –д нэн даруй мэдэгдэнэ.
+            </li>
+            <li>
+              Хуулийн хүрээнд харилцагч Sales.monos.mn сайтад үүссэн өөрийн хувийн мэдээллийг өөрчлөх, устгах эрхтэй ба
+              үүний тулд sales.monos.mn-ний sales@monos.mn хаягаар хүсэлтийн и-мэйлийг илгээнэ.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

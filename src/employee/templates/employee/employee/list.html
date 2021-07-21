@@ -1,0 +1,148 @@
+{% extends 'employee/core/base.html' %}
+
+{% load filter_tags %}
+
+{% block content %}
+<div class="content-body">
+  <div class="container pd-x-0">
+    <div class="d-sm-flex align-items-center justify-content-between mg-b-20 mg-lg-b-25 mg-xl-b-30">
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-style3 mg-b-10">
+            {% for breadcrumb, link in breadcrumbs %}
+            {% if not forloop.last %}
+            <li class="breadcrumb-item">
+              <a href="{{ link }}">{{ breadcrumb }}</a>
+            </li>
+            {% else %}
+            <li class="breadcrumb-item active">{{ breadcrumb }}</li>
+            {% endif %}
+            {% endfor %}
+          </ol>
+        </nav>
+        <h4 class="mg-b-0 tx-spacing--1">{{ page_title }}</h4>
+      </div>
+      <div class="d-none d-md-block">
+        <button onclick="addManager()"
+          class="btn btn-sm pd-x-15 btn-primary btn-uppercase mg-l-5">
+          <i data-feather="plus"
+            class="wd-10 mg-r-5"></i> Нэмэх
+        </button>
+      </div>
+    </div>
+    <div class="row row-xs">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="table-responsive">
+            <table class="table table-dashboard mg-b-0">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Нэвтрэх нэр</th>
+                  <th>Овог/Нэр</th>
+                  <th>Имэйл</th>
+                  <th>Хандах эрх</th>
+                  <th>Үйлдэл</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <form method="GET">
+                    <td>~</td>
+                    {% for field in filter_form %}
+                    <td>{{ field }}</td>
+                    {% endfor %}
+                    <td>
+                      <button type="submit"
+                        class="btn btn-white btn-uppercase">
+                        <i data-feather="search"></i>
+                        Хайх
+                      </button>
+                      <button type="button"
+                        onclick="clearSearchFunction()"
+                        class="btn btn-white btn-uppercase">
+                        <i data-feather="x"></i>
+                        Цэвэрлэх
+                      </button>
+                    </td>
+                  </form>
+                </tr>
+                {% for manager in managers %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ manager.user.username }}</td>
+                  <td>{{ manager.user.last_name|default:"~" }}</td>
+                  <td>{{ manager.user.first_name|default:"~" }}</td>
+                  <td>
+                    {% if manager.is_super_manager %}
+                    <span class="badge badge-success">Админ</span>
+                    {% else %}
+                    <span class="badge badge-warning">Дотоод хэрэглэгч</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <div class="dropdown">
+                      <button class="btn btn-white btn-sm dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        <i data-feather="settings"></i>
+                        Тохиргоо
+                      </button>
+                      <div class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item"
+                          href="{% url 'employee-update' manager.id %}">Засах</a>
+                        <a class="dropdown-item"
+                          href="#">Устгах</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="100">Жагсаалт хоосон байна</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <div class="pagination">
+              {% if is_paginated %}
+              {% if page_obj.has_previous %}
+              <a href="?{% param_replace page=1 %}">Эхний хуудас</a>
+              {% if page_obj.previous_page_number != 1 %}
+              <a href="?{% param_replace page=page_obj.previous_page_number %}">Өмнөх</a>
+              {% endif %}
+              {% endif %}
+
+              Нийт {{ paginator.num_pages }} хуудаснаас {{ page_obj.number }} харуулав
+
+              {% if page_obj.has_next %}
+              {% if page_obj.next_page_number != paginator.num_pages %}
+              <a href="?{% param_replace page=page_obj.next_page_number %}">Дараах</a>
+              {% endif %}
+              <a href="?{% param_replace page=paginator.num_pages %}">Сүүлийх</a>
+              {% endif %}
+
+              <p>Обьект {{ page_obj.start_index }}—{{ page_obj.end_index }}</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script>
+  const addManager = () => {
+    window.location = "{% url 'employee-create' %}"
+  }
+  const clearSearchFunction = () => {
+    window.location = "{% url 'employee-list' %}"
+  }
+</script>
+{% endblock %}

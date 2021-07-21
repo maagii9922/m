@@ -1,0 +1,315 @@
+{% load static humanize %}
+
+<style>
+  /* .modal-body {
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+  } */
+  .form-control-sm {
+    height: calc(1.5rem + 2px);
+  }
+
+  #twitt {
+    max-height: calc(100vh - 300px);
+    overflow: auto;
+  }
+
+  .btn-desc {
+    font-size: 12px;
+    height: auto;
+    padding: 0;
+    text-align: left;
+  }
+
+  .popover-body {
+    overflow: auto;
+    max-height: 300px;
+    font-size: 12px;
+  }
+</style>
+<div class="modal-header">
+  <h4 class="modal-title">Бүтээгдэхүүн нэмэх</h4>
+  <button type="button"
+    class="close"
+    data-dismiss="modal">&times;</button>
+</div>
+<div class="modal-body">
+  <div id='twitt'
+    class='table-responsive'>
+    <table id="table"
+      class="table table-hover table-sm fixed_table"
+      style="font-size: 12px;">
+      <thead id="thead">
+        <tr>
+          <th></th>
+          <th></th>
+          <th>Үйлдвэрлэгч</th>
+          <th>Нэр</th>
+          <th>Ангилал</th>
+          <th>Хэлбэр</th>
+          <th>Урамшуулал</th>
+          <th>Үнэ</th>
+          <th>Нөөцтэй эсэх</th>
+          <th></th>
+        </tr>
+        <tr>
+          <th></th>
+          <th></th>
+          <th>
+            <input id="id_manifacturer"
+              name="manifacturer"
+              type="text"
+              class="form-control form-control-sm"
+              onchange="onChange()">
+          </th>
+          <th>
+            <input id="id_name"
+              name="name"
+              type="text"
+              class="form-control form-control-sm"
+              onchange="onChange()">
+          </th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        {% for product in products %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>
+            <input type="checkbox"
+              name="product"
+              value="{{ product.id }}">
+          </td>
+          <td>{{ product.manufacturer }}</td>
+          <td>
+            <button type="button"
+              class="btn-desc btn btn-link"
+              data-toggle="popover"
+              data-content='{{ product.description }}'>
+              {{ product.name }}
+            </button>
+          </td>
+          <td>{{ product.category }}</td>
+          <td>{{ product.form }}</td>
+          <td>{{ product.discount }}</td>
+          <td>{{ product.price|intcomma:False }}₮</td>
+          <td>
+            {% if product.stock > 0 %}
+            <i class="fas fa-check"></i>
+            {% else %}
+            <i class="fas fa-ban"></i>
+            {% endif %}
+          </td>
+          <td>
+            <button class="btn btn-primary btn-xs btn-svg-icon product-card__addtocart"
+              data-href="{% url 'cart_add_ajax' product.id %}">
+              <svg width="16px"
+                height="16px">
+                <use xlink:href="{% static 'customer/images/sprite.svg' %}#cart-20"></use>
+              </svg>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <i class='mt-3'
+    style="font-size:11px">*Бүтээгдэхүүний нэр дээр дарснаар дэлгэрэнгүй тайлбар харах боломжтой</i>
+</div>
+<div class="modal-footer">
+  <div class="mr-auto">Нийт: <span id="productCount">0</span></div>
+  <button type="button"
+    class="btn btn-secondary"
+    data-dismiss="modal">Хаах</button>
+  <form action="{% url 'cart_add_products_ajax_view' %}"
+    method="POST">{% csrf_token %}
+    <input id="hidden"
+      type="hidden"
+      name="hidden">
+    <button class="btn btn-primary">Сагслах</button>
+  </form>
+</div>
+
+<script>
+  function popoverDesc() {
+    $('[data-toggle="popover"]').popover({
+      trigger: 'focus',
+      title: 'Дэлгэрэнгүй тайлбар',
+      html: true,
+      delay: {
+        "show": 100,
+        "hide": 300
+      },
+      template: '<div class="popover" role="tooltip"><div class="arrow"></div>\
+                <h3 class="popover-header"></h3><div class="popover-body"></div></div>'
+    });
+  }
+
+  $(document).ready(function () {
+    $("#twitt").bind('scroll', loadOnScroll);
+    popoverDesc();
+  });
+
+  function checkboxCheck() {
+    $("input[type='checkbox']").each(function () {
+      var products = JSON.parse($("#hidden").val());
+      if (products[$(this).val()]) {
+        $(this).attr('checked', true);
+      }
+    })
+  }
+
+  // Scroll globals
+  var pageNum = 1; // The latest page loaded
+  var hasNextPage = true; // Indicates whether to expect another page after this one
+  var counter = 20;
+
+  // loadOnScroll handler
+  var loadOnScroll = function () {
+    // If the current scroll position is past out cutoff point...
+    if ($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight - 10) {
+      // temporarily unhook the scroll event watcher so we don't call a bunch of times in a row
+      $(this).unbind();
+      // execute the load function below that will visit the JSON feed and stuff data into the HTML
+      loadItems();
+    }
+  };
+
+  var loadItems = function () {
+    // If the next page doesn't exist, just quit now 
+    if (hasNextPage === false) {
+      return false
+    }
+    // Update the page number
+    pageNum = pageNum + 1;
+    // Configure the url we're about to hit
+    $.ajax({
+      url: '{% url "customer_product_ajax" %}',
+      data: {
+        page: pageNum,
+        manifacturer: $("#id_manifacturer").val(),
+        name: $("#id_name").val()
+      },
+      dataType: 'json',
+      success: function (data) {
+        // Update global next page variable
+        hasNextPage = true; //.hasNext;
+        // Loop through all items
+        let tbody = document.getElementById('tbody')
+
+        for (i in data) {
+          counter++
+          // Do something with your json object response
+          tbody.insertAdjacentHTML('beforeEnd', '<tr> \
+            <td>' + counter + '</td>\
+            <td>\
+              <input type="checkbox"\
+                name="product"\
+                value=' + data[i].id + '>\
+            </td>\
+            <td>' + data[i].manufacturer + '</td>\
+            <td><button type="button" class="btn-desc btn btn-link" data-toggle="popover"\
+              data-content="' + data[i].description + '">' + data[i].name + '</td>\
+            <td>' + data[i].category + '</td>\
+            <td>' + data[i].form + '</td>\
+            <td>' + data[i].discount + '</td>\
+            <td>' + data[i].price + ' ₮</td>\
+            <td>' + (data[i].stock > 0 ? '<i class="fas fa-check"></i>' : '<i class="fas fa-ban"></i>') + '</td>\
+            <td>\
+              <button class="btn btn-primary btn-xs btn-svg-icon product-card__addtocart"\
+              data-href="/cart/add/ajax/' + data[i].id + '/">\
+                <svg width="16px"\
+                  height="16px">\
+                  <use xlink:href="{% static "customer/images/sprite.svg" %}#cart-20"></use>\
+                </svg>\
+              </button>\
+            </td>\
+          </tr >')
+        }
+        popoverDesc();
+      },
+      error: function (data) {
+        // When I get a 400 back, fail safely
+        hasNextPage = false
+      },
+      complete: function (data, textStatus) {
+        // Turn the scroll monitor back on
+        $('#twitt').bind('scroll', loadOnScroll);
+        checkboxCheck();
+        popoverDesc();
+      }
+    });
+  };
+
+  var onChange = function (input) {
+
+    var data = {
+      manifacturer: $("#id_manifacturer").val(),
+      name: $("#id_name").val(),
+    };
+
+    $.ajax({
+      url: '{% url "customer_product_ajax" %}',
+      data: data,
+      dataType: 'json',
+      success: function (data) {
+        counter = 0;
+        var tbody = document.getElementById('tbody')
+        var html = ""
+        for (i in data) {
+
+          counter++
+
+          var html = html + '<tr> \
+            <td>' + counter + '</td>\
+            <td>\
+              <input type="checkbox"\
+                name="product"\
+                value=' + data[i].id + '>\
+            </td>\
+            <td>' + data[i].manufacturer + '</td>\
+            <td><button type="button" class="btn-desc btn btn-link" data-toggle="popover"\
+              data-content="' + data[i].description + '">' + data[i].name + '</td>\
+            <td>' + data[i].category + '</td>\
+            <td>' + data[i].form + '</td>\
+            <td>' + data[i].discount + '</td>\
+            <td>' + data[i].price + ' ₮</td>\
+            <td>' + (data[i].stock > 0 ? '<i class="fas fa-check"></i>' : '<i class="fas fa-ban"></i>') + '</td>\
+            <td>\
+              <button class="btn btn-primary btn-xs btn-svg-icon product-card__addtocart"\
+              data-href="/cart/add/ajax/' + data[i].id + '/">\
+                <svg width="16px"\
+                  height="16px">\
+                  <use xlink:href="{% static "customer/images/sprite.svg" %}#cart-20"></use>\
+                </svg>\
+              </button>\
+            </td>\
+          </tr >'
+        }
+        document.getElementById('twitt').scrollTop = 0;
+        if (html) {
+          tbody.innerHTML = html;
+        } else {
+          tbody.innerHTML = '<tr><td rowspan="100">жагсаалт хоосон байна</td></tr>';
+        }
+
+      },
+      error: function (data) {
+        console.log("error");
+      },
+      complete: function (data, textStatus) {
+        pageNum = 1;
+        hasNextPage = true;
+        checkboxCheck();
+        popoverDesc();
+      }
+    });
+  }
+</script>

@@ -1,0 +1,70 @@
+{% extends 'employee/core/base.html' %}
+
+{% load filter_tags table_tags %}
+
+{% block content %}
+<div class="content-body">
+  <div class="container pd-x-0">
+    <div class="d-sm-flex align-items-center justify-content-between mg-b-20 mg-lg-b-25 mg-xl-b-30">
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-style3 mg-b-10">
+            {% for breadcrumb, link in breadcrumbs %}
+            {% if not forloop.last %}
+            <li class="breadcrumb-item">
+              <a href="{{ link }}">{{ breadcrumb }}</a>
+            </li>
+            {% else %}
+            <li class="breadcrumb-item active">{{ breadcrumb }}</li>
+            {% endif %}
+            {% endfor %}
+          </ol>
+        </nav>
+        <h4 class="mg-b-0 tx-spacing--1">{{ page_title }}</h4>
+      </div>
+      {% if add_url %}
+      <div class="d-none d-md-block">
+        <a style="color:white;"
+          href="{{ add_url }}"
+          class="btn btn-sm pd-x-15 btn-primary btn-uppercase mg-l-5">
+          <i data-feather="plus"
+            class="wd-10 mg-r-5"></i> Нэмэх
+        </a>
+      </div>
+      {% endif %}
+    </div>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-outline alert-{{ message.tags }} d-flex align-items-center"
+      role="alert">
+      <i data-feather="alert-circle"
+        class="mg-r-10"></i>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% table %}
+  </div>
+</div>
+<div class="modal fade"
+  id="modalInformation"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg"
+    role="document">
+    <div class="modal-content">
+
+    </div><!-- modal-content -->
+  </div><!-- modal-dialog -->
+</div><!-- modal -->
+{% endblock %}
+{% block javascript %}
+<script>
+  $(document).on("click", ".detailInformation", function () {
+    const url = $(this).attr("data-href");
+    $("#modalInformation .modal-content").load(url);
+    $("#modalInformation").modal("show");
+  })
+</script>
+{% endblock %}

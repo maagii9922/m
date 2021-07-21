@@ -1,0 +1,65 @@
+{% extends 'employee/core/base.html' %}
+{% load static i18n %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="content-body">
+  <div class="container pd-x-0">
+
+    <div class="d-sm-flex align-items-center justify-content-between mg-b-20 mg-lg-b-25 mg-xl-b-30">
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-style3 mg-b-10">
+            {% for breadcrumb, link in breadcrumbs %}
+            {% if not forloop.last %}
+            <li class="breadcrumb-item">
+              <a href="{{ link }}">{{ breadcrumb }}</a>
+            </li>
+            {% else %}
+            <li class="breadcrumb-item active">{{ breadcrumb }}</li>
+            {% endif %}
+            {% endfor %}
+          </ol>
+        </nav>
+        <h4 class="mg-b-0 tx-spacing--1">{{ page_title }}</h4>
+      </div>
+      {% if add_url %}
+      <div class="d-none d-md-block">
+        <a style="color:white;"
+          href="{{ add_url }}"
+          class="btn btn-sm pd-x-15 btn-primary btn-uppercase mg-l-5">
+          <i data-feather="plus"
+            class="wd-10 mg-r-5"></i> Нэмэх
+        </a>
+      </div>
+      {% endif %}
+    </div>
+
+    <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+    <form action=""
+      method="post">{% csrf_token %}
+      <table>
+        {{ wizard.management_form }}
+        {% if wizard.form.forms %}
+        {{ wizard.form.management_form }}
+        {% for form in wizard.form.forms %}
+        {{ form }}
+        {% endfor %}
+        {% else %}
+        {{ wizard.form }}
+        {% endif %}
+      </table>
+      {% if wizard.steps.prev %}
+      <button name="wizard_goto_step"
+        type="submit"
+        value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
+      <button name="wizard_goto_step"
+        type="submit"
+        value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
+      {% endif %}
+      <input type="submit"
+        value="{% trans "submit" %}" />
+    </form>
+  </div>
+</div>
+{% endblock %}

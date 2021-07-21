@@ -1,0 +1,71 @@
+{% load static humanize %}
+
+<a href="#"
+  class="indicator__button">
+  <span class="indicator__area">
+    <svg width="20px"
+      height="20px">
+      <use xlink:href="{% static 'customer/images/sprite.svg' %}#cart-20"></use>
+    </svg>
+    <span class="cart_length indicator__value">{{ cart|length }}</span>
+  </span>
+</a>
+<div class="indicator__dropdown">
+  <!-- .dropcart -->
+  <div class="dropcart">
+    <div class="dropcart__products-list">
+      {% for product in cart %}
+      <div class="dropcart__product">
+        <div class="dropcart__product-image">
+          <a href="">
+            <img src="{{ product.image }}"
+              alt="">
+          </a>
+        </div>
+        <div class="dropcart__product-info">
+          <div class="dropcart__product-name">
+            <a href="{% url 'customer-product-detail' product.id %}">
+              {{ product.name }}
+            </a>
+          </div>
+          <ul class="dropcart__product-options">
+            <li>Үйлдвэрлэгч: {{ product.manufacturer }}</li>
+            <li>Нийлүүлэгч: {{ product.seller }}</li>
+          </ul>
+          <div class="dropcart__product-meta">
+            <span class="dropcart__product-quantity">{{ product.quantity }}</span> ×
+            <span class="dropcart__product-price">
+              {{ product.discounted_price|intcomma:False }} ₮
+            </span>
+          </div>
+        </div>
+        <button type="button"
+          data-href="{% url 'cart_remove_ajax' product.id %}"
+          class="productRemove dropcart__product-remove btn btn-light btn-sm btn-svg-icon">
+          <svg width="10px"
+            height="10px">
+            <use xlink:href="{% static 'customer/images/sprite.svg' %}#cross-10"></use>
+          </svg>
+        </button>
+      </div>
+      {% empty %}
+      Сагс хоосон байна
+      {% endfor %}
+    </div>
+    <div class="dropcart__totals">
+      <table>
+        <tr>
+          <th>Үндсэн үнэ</th>
+          <td class="cart_total">{{ cart.get_total_price|intcomma:False }} ₮</td>
+        </tr>
+      </table>
+    </div>
+    <div class="dropcart__buttons">
+      <a class="btn btn-secondary"
+        href="{% url 'cart_clear' %}">Хоослох</a>
+      <a class="btn btn-primary btn-flat"
+        href="{% url 'customer-order' %}">Захиалга хийх</a>
+    </div>
+  </div>
+  <!-- .dropcart / end -->
+</div>

@@ -1,0 +1,27 @@
+{% comment %}
+<div class="steps clearfix">
+  <ul role="tablist">
+    {% for step in wizard.steps.all %}
+    <li role="tab"
+      class="
+      {% ifequal wizard.steps.step1 forloop.counter %}
+      first current
+      {% else %}
+      disabled
+      {% endifequal %}
+      {% if forloop.last %} last{% endif %}"
+      aria-disabled="false">
+      <a id="wizard-t-{{ forloop.counter }}"
+        href="#wizard-h-{{ forloop.counter }}"
+        aria-controls="wizard-p-{{ forloop.counter }}">
+        {% ifequal wizard.steps.step1 forloop.counter %}
+        <span class="current-info audible">current step: </span>
+        {% endifequal %}
+        <span class="number">{{ forloop.counter }}</span>
+        <!-- <span class="title">Төрөл</span> -->
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endcomment %}

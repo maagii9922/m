@@ -1,0 +1,161 @@
+{% load static filter_tags %}
+
+<div class="shop-layout__content">
+  <div class="block">
+    <div class="products-view">
+      <!--Responsive filter option-->
+      <div class="products-view__options">
+        <div class="view-options view-options--offcanvas--mobile">
+          <div class="view-options__filters-button">
+            <button type="button"
+              class="filters-button">
+              <svg class="filters-button__icon"
+                width="16px"
+                height="16px">
+                <use xlink:href="{% static 'customer/images/sprite.svg' %}#filters-16"></use>
+              </svg>
+              <span class="filters-button__title">Шүүлтүүр</span>
+              <!-- <span class="filters-button__counter">3</span> -->
+            </button>
+          </div>
+          <div class="view-options__layout">
+            <div class="layout-switcher">
+              <div class="layout-switcher__list">
+                <button data-layout="grid-3-sidebar"
+                  data-with-features="false"
+                  title="Grid"
+                  type="button"
+                  class="layout-switcher__button 
+                  {% ifequal layout 'grid-3-sidebar' %}
+                  {% ifequal features 'false' %}layout-switcher__button--active
+                  {% endifequal %}
+                  {% endifequal %}">
+                  <svg width="16px"
+                    height="16px">
+                    <use xlink:href="{% static 'customer/images/sprite.svg' %}#layout-grid-16x16"></use>
+                  </svg>
+                </button>
+                <button data-layout="grid-3-sidebar"
+                  data-with-features="true"
+                  title="Grid With Features"
+                  type="button"
+                  class="layout-switcher__button 
+                  {% ifequal layout 'grid-3-sidebar' %}
+                  {% ifequal features 'true' %}layout-switcher__button--active
+                  {% endifequal %}
+                  {% endifequal %}">
+                  <svg width="16px"
+                    height="16px">
+                    <use xlink:href="{% static 'customer/images/sprite.svg' %}#layout-grid-with-details-16x16">
+                    </use>
+                  </svg>
+                </button>
+                <button data-layout="list"
+                  data-with-features="false"
+                  title="List"
+                  type="button"
+                  class="layout-switcher__button 
+                  {% if layout %}
+                  {% ifequal layout 'list' %}
+                  layout-switcher__button--active
+                  {% endifequal %}
+                  {% else %}
+                  layout-switcher__button--active
+                  {% endif %}">
+                  <svg width="16px"
+                    height="16px">
+                    <use xlink:href="{% static 'customer/images/sprite.svg' %}#layout-list-16x16"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="view-options__legend">
+            Нийт {{ products.paginator.num_pages }} хуудаснаас {{ products.number }} дэх хуудсыг харуулав.
+          </div>
+          <div class="view-options__divider"></div>
+          {% comment %}
+          <div class="view-options__control"><label for="">Эрэмбэлэх</label>
+            <div>
+              <select class="form-control form-control-sm"
+                name=""
+                id="">
+                <option value="">Default</option>
+                <option value="">Name (A-Z)</option>
+              </select>
+            </div>
+          </div>
+          {% endcomment %}
+        </div>
+      </div>
+      <!--Responsive filter option end-->
+      <!--Products-->
+      <div class="products-view__list products-list"
+        data-layout="{% if layout %}{{ layout }}{% else %}list{% endif %}"
+        data-with-features="{% if features %}{{ features }}{% else %}false{% endif %}">
+        <div class="products-list__body">
+          {% for product in products %}
+          <div class="products-list__item">
+            {% include 'customer/include/product.html' %}
+          </div>
+          {% empty %}
+          <div style="margin-top:50px;">Бүтээгдэхүүн олдсонгүй</div>
+          {% endfor %}
+        </div>
+      </div>
+      <!--Products end-->
+      {% if is_paginated %}
+      <!--Pagination-->
+      <div class="products-view__pagination">
+        <ul class="pagination justify-content-center">
+          {% if products.has_previous %}
+          <li class="page-item">
+            <a class="page-link page-link--with-arrow"
+              href="?{% param_replace request page=products.previous_page_number %}"
+              aria-label="Previous">
+              <svg class="page-link__arrow page-link__arrow--left"
+                aria-hidden="true"
+                width="8px"
+                height="13px">
+                <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-left-8x13"></use>
+              </svg>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link"
+              href="?{% param_replace request page=products.previous_page_number %}">
+              {{ products.previous_page_number }}
+            </a>
+          </li>
+          {% endif %}
+          <li class="page-item active">
+            <a class="page-link"
+              href="">{{ products.number }}</a>
+          </li>
+          {% if products.has_next %}
+          <li class="page-item">
+            <a class="page-link"
+              href="?{% param_replace request page=products.next_page_number %}">
+              {{ products.next_page_number }}
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link page-link--with-arrow"
+              href="?{% param_replace request page=products.next_page_number %}"
+              aria-label="Next">
+              <svg class="page-link__arrow page-link__arrow--right"
+                aria-hidden="true"
+                width="8px"
+                height="13px">
+                <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-right-8x13"></use>
+              </svg>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+      <!--Pagination end-->
+      {% endif %}
+    </div>
+  </div>
+</div>

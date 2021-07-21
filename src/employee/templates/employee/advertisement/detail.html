@@ -1,0 +1,71 @@
+<div class="modal-body pd-20 pd-sm-40">
+  <a href=""
+    role="button"
+    class="close pos-absolute t-15 r-15"
+    data-dismiss="modal"
+    aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </a>
+
+  <div>
+    <h4>Урамшууллын дэлгэрэнгүй</h4>
+    <div class="table-responsive mt-4">
+      <table class="table table-striped">
+        <tbody>
+          <tr>
+            <td>Нэр:</td>
+            <td>{{ object.name }}</td>
+          </tr>
+          <tr>
+            <td>Баннер зураг:</td>
+            <td><a href="{{ object.image.url }}"
+                target="_blank">Зураг</a></td>
+          </tr>
+          <tr>
+            <td>Хэрэгжүүлэх төрөл:</td>
+            <td>{{ object.get_implement_type_display }}</td>
+          </tr>
+          {% if object.implement_type == 2 %}
+          <tr>
+            <td>Харилчагчийн төрөл:</td>
+            <td>
+              {% for category in object.customer_categories.all %}
+              <li>{{ category.name }}</li>
+              {% endfor %}
+            </td>
+          </tr>
+          {% elif object.implement_type == 3 %}
+          <tr>
+            <td>Харилцагчид:</td>
+            <td>
+              {% for customer in object.customers.all %}
+              <li>{{ customer.name }}</li>
+              {% endfor %}
+            </td>
+          </tr>
+          {% elif object.implement_type == 4 %}
+          <tr>
+            <td>Агуулахууд:</td>
+            <td>
+              {% for warehouse in object.warehouses.all %}
+              <li>{{ warehouse.name }}</li>
+              {% endfor %}
+            </td>
+          </tr>
+          {% endif %}
+
+          <tr>
+            <td>Хэрэгжүүлнэ / Хэрэгжүүлэхгүй:</td>
+            <td>
+              {% if object.is_implement %}
+              Хэрэгжүүлнэ
+              {% else %}
+              Хэрэгжүүлэхгүй
+              {% endif %}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- modal-body -->

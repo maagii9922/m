@@ -1,0 +1,20 @@
+{% load i18n %}
+<div class="actions clearfix">
+  <ul role="menu"
+    aria-label="Pagination">
+    <li class="disabled"
+      aria-disabled="true">
+      {% if wizard.steps.prev %}
+      <button onclick="window.history.back();"
+        class="btn btn-secondary"
+        name="wizard_goto_step"
+        type="button">{% trans "prev step" %}</button>
+      {% endif %}
+    </li>
+    <li aria-hidden="false"
+      aria-disabled="false">
+      <button class="btn btn-primary"
+        type="submit">{% trans "submit" %}</button>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,63 @@
+{% extends 'customer/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="site__body">
+  <div class="page-header">
+    <div class="page-header__container container">
+      <div class="page-header__breadcrumb">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'customer-home' %}">Нүүр хуудас</a>
+              <svg class="breadcrumb-arrow"
+                width="6px"
+                height="9px">
+                <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+              </svg>
+            </li>
+            <li class="breadcrumb-item"
+              aria-current="page">
+              <a href="{% url 'customer-posts' %}">Нийтлэл</a>
+              <svg class="breadcrumb-arrow"
+                width="6px"
+                height="9px">
+                <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-right-6x9"></use>
+              </svg>
+            </li>
+            <li class="breadcrumb-item active"
+              aria-current="page">Нийтлэл дэлгэрэнгүй</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-9 col-xl-8">
+        <div class="block post post--layout--full">
+          <div class="post__header post-header post-header--layout--full">
+            <div class="post-header__categories"><a href="">{{ post.category.name }}</a></div>
+            <h1 class="post-header__title">{{ post.title }}</h1>
+            <div class="post-header__meta">
+              <!-- <div class="post-header__meta-item">By <a href="">Jessica Moore</a></div> -->
+              <div class="post-header__meta-item"><a href="">{{ post.updated_at }}</a></div>
+              <!-- <div class="post-header__meta-item"><a href="">4 Comments</a></div> -->
+            </div>
+          </div>
+          <div class="post__featured">
+            <a href="">
+              <img src="{{ post.background_image.url }}"
+                alt="">
+            </a>
+          </div>
+          <div class="post__content typography typography--expanded">
+            {{ post.content|safe }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

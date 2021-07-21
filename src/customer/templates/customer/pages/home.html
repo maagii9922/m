@@ -1,0 +1,229 @@
+{% extends 'customer/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<!-- site__body -->
+<div class="site__body">
+  <!-- .block-slideshow -->
+  <div class="block-slideshow block-slideshow--layout--full block">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="block-slideshow__body">
+            <div class="owl-carousel">
+              {% for banner in banners %}
+              <a class="block-slideshow__slide"
+                href="#">
+                <div class="block-slideshow__slide-image block-slideshow__slide-image--desktop"
+                  style="background-image: url('{{ banner.image.url }}');">
+                </div>
+                <div class="block-slideshow__slide-image block-slideshow__slide-image--mobile"
+                  style="background-image: url('{{ banner.image.url }}');">
+                </div>
+                <div class="block-slideshow__slide-content">
+                  <!-- <div class="block-slideshow__slide-title">{{ banner.name }}</div> -->
+                  <!-- <div class="block-slideshow__slide-text">{{ banner.description }}</div> -->
+                </div>
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- .block-slideshow / end -->
+
+  <!-- .block-features -->
+  <div class="block block-features block-features--layout--classic">
+    <div class="container">
+      <div class="block-features__list">
+        <div class="block-features__item">
+          <div class="block-features__icon">
+            <svg width="48px"
+              height="48px">
+              <use xlink:href="{% static 'customer/images/sprite.svg' %}#fi-free-delivery-48"></use>
+            </svg>
+          </div>
+          <div class="block-features__content">
+            <div class="block-features__title">Үнэгүй хүргэлт</div>
+            {% comment %} <div class="block-features__subtitle">For orders from $50</div> {% endcomment %}
+          </div>
+        </div>
+        <div class="block-features__divider"></div>
+        <div class="block-features__item">
+          <div class="block-features__icon"><svg width="48px"
+              height="48px">
+              <use xlink:href="{% static 'customer/images/sprite.svg' %}#fi-24-hours-48"></use>
+            </svg></div>
+          <div class="block-features__content">
+            <div class="block-features__title">Тусламж 24/7</div>
+            {% comment %} <div class="block-features__subtitle">Call us anytime</div> {% endcomment %}
+          </div>
+        </div>
+        <div class="block-features__divider"></div>
+        <div class="block-features__item">
+          <div class="block-features__icon">
+            <svg width="48px"
+              height="48px">
+              <use xlink:href="{% static 'customer/images/sprite.svg' %}#fi-payment-security-48"></use>
+            </svg>
+          </div>
+          <div class="block-features__content">
+            <div class="block-features__title">100% аюулгүй</div>
+            {% comment %} <div class="block-features__subtitle">Only secure payments</div> {% endcomment %}
+          </div>
+        </div>
+        <div class="block-features__divider"></div>
+        <div class="block-features__item">
+          <div class="block-features__icon">
+            <svg width="48px"
+              height="48px">
+              <use xlink:href="{% static 'customer/images/sprite.svg' %}#fi-tag-48"></use>
+            </svg>
+          </div>
+          <div class="block-features__content">
+            <div class="block-features__title">Урамшуулалтай</div>
+            {% comment %} <div class="block-features__subtitle">Discounts up to 90%</div> {% endcomment %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- .block-features / end -->
+
+  <!-- .block-products-carousel -->
+  <div class="block block-products-carousel"
+    data-layout="grid-4">
+    <div class="container">
+      <div class="block-header">
+        <h3 class="block-header__title">Онцлох бүтээгдэхүүн</h3>
+        <div class="block-header__divider"></div>
+        <ul class="block-header__groups-list">
+          <li>
+            <button type="button"
+              class="block-header__group block-header__group--active">
+              Бүгд
+            </button>
+          </li>
+          <li>
+            <button type="button"
+              class="block-header__group">
+              Шинэ
+            </button>
+          </li>
+          <li>
+            <button type="button"
+              class="block-header__group">
+              Урамшуулалтай
+            </button>
+          </li>
+        </ul>
+        <div class="block-header__arrows-list">
+          <button class="block-header__arrow block-header__arrow--left"
+            type="button">
+            <svg width="7px"
+              height="11px">
+              <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-left-7x11"></use>
+            </svg>
+          </button>
+          <button class="block-header__arrow block-header__arrow--right"
+            type="button">
+            <svg width="7px"
+              height="11px">
+              <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-right-7x11"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="block-products-carousel__slider">
+        <div class="block-products-carousel__preloader"></div>
+        <div class="owl-carousel">
+          {% for product in products %}
+          <div class="block-products-carousel__column">
+            <div class="block-products-carousel__cell">
+              {% include 'customer/include/product.html' %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- .block-products-carousel / end -->
+
+  <div class="block block-posts block-posts--layout--grid-nl"
+    data-layout="grid-nl">
+    <div class="container">
+      <div class="block-header">
+        <h3 class="block-header__title">Сүүлийн нийтлэлүүд</h3>
+        <div class="block-header__divider"></div>
+        <div class="block-header__arrows-list">
+          <button class="block-header__arrow block-header__arrow--left"
+            type="button">
+            <svg width="7px"
+              height="11px">
+              <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-left-7x11"></use>
+            </svg>
+          </button>
+          <button class="block-header__arrow block-header__arrow--right"
+            type="button"><svg width="7px"
+              height="11px">
+              <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-right-7x11"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="block-posts__slider">
+        <div class="owl-carousel owl-loaded owl-drag">
+          <div class="owl-stage-outer">
+            <div class="owl-stage"
+              style="transform: translate3d(-1800px, 0px, 0px); transition: all 0s ease 0s; width: 7200px;">
+              {% for post in posts %}
+              <div class="owl-item"
+                style="width: 330px; margin-right: 30px;">
+                <div class="post-card">
+                  <div class="post-card__image">
+                    <a href="{% url 'customer-post-detail' post.id %}">
+                      <img src="{{ post.background_image.url }}"
+                        alt="">
+                    </a>
+                  </div>
+                  <div class="post-card__info">
+                    <div class="post-card__category"><a href="">Special Offers</a></div>
+                    <div class="post-card__name"><a href="{% url 'customer-post-detail' post.id %}">{{ post.title }}</a>
+                    </div>
+                    <div class="post-card__date">{{ post.updated_at|date:"Y-m-d f" }}</div>
+                    <div class="post-card__content">{{ post.content|striptags|truncatechars:200|safe }}...</div>
+                    <div class="post-card__read-more">
+                      <a href="{% url 'customer-post-detail' post.id %}"
+                        class="btn btn-secondary btn-sm">Дэлгэрэнгүй</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="owl-nav disabled">
+            <button type="button"
+              role="presentation"
+              class="owl-prev">
+              <span aria-label="Previous">‹</span>
+            </button>
+            <button type="button"
+              role="presentation"
+              class="owl-next">
+              <span aria-label="Next">›</span>
+            </button>
+          </div>
+          <div class="owl-dots disabled"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- site__body / end -->
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'employee/core/base.html' %}
+
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="content-body">
+  <div class="container pd-x-0">
+    <div class="d-sm-flex align-items-center justify-content-between mg-b-20 mg-lg-b-25 mg-xl-b-30">
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-style3 mg-b-10">
+            {% for breadcrumb, link in breadcrumbs %}
+            {% if not forloop.last %}
+            <li class="breadcrumb-item">
+              <a href="{{ link }}">{{ breadcrumb }}</a>
+            </li>
+            {% else %}
+            <li class="breadcrumb-item active">{{ breadcrumb }}</li>
+            {% endif %}
+            {% endfor %}
+          </ol>
+        </nav>
+        <h4 class="mg-b-0 tx-spacing--1">{{ page_title }}</h4>
+      </div>
+    </div>
+    <div class="row row-xs">
+      <div class="col-md-12">
+        <div class="card card-body">
+          <form action="" class="form-horizontal" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            {{ form.media }}
+            {% bootstrap_form form layout='horizontal' %}
+            <div class="form-group">
+              <button type="button" onclick="window.history.back()" class="btn btn-secondary">Буцах</button>
+              <button type="submit" class="btn btn-success">Хадгалах</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

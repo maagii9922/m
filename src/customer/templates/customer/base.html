@@ -1,0 +1,134 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en"
+  dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1">
+  <meta name="format-detection"
+    content="telephone=no">
+  <title>Онлайн захиалгын систем</title>
+  <link rel="icon"
+    type="image/png"
+    href="{% static 'customer/images/favicon.ico' %}">
+  <!-- fonts -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i">
+  <!-- css -->
+  <link rel="stylesheet"
+    href="{% static 'customer/vendor/bootstrap-4.2.1/css/bootstrap.min.css' %}">
+  <link rel="stylesheet"
+    href="{% static 'customer/vendor/owl-carousel-2.3.4/assets/owl.carousel.min.css' %}">
+  <link rel="stylesheet"
+    href="{% static 'customer/css/style.css' %}">
+  <!-- js -->
+  <script src="{% static 'customer/vendor/jquery-3.3.1/jquery.min.js' %}"></script>
+  <script src="{% static 'customer/vendor/bootstrap-4.2.1/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'customer/vendor/owl-carousel-2.3.4/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'customer/vendor/nouislider-12.1.0/nouislider.min.js' %}"></script>
+  <script src="{% static 'customer/js/number.js' %}"></script>
+  <script src="{% static 'customer/js/main.js' %}"></script>
+  <script src="{% static 'customer/js/header.js' %}"></script>
+  <script src="{% static 'customer/js/custom.js' %}"></script>
+  <script src="{% static 'customer/vendor/svg4everybody-2.1.9/svg4everybody.min.js' %}"></script>
+  <script>
+    svg4everybody();
+  </script>
+
+  <!-- font - fontawesome -->
+  <link rel="stylesheet"
+    href="{% static 'customer/vendor/fontawesome-5.6.1/css/all.min.css' %}">
+  <!-- font - stroyka -->
+  <link rel="stylesheet"
+    href="{% static 'customer/fonts/stroyka/stroyka.css' %}">
+  <style>
+    .body__preloader {
+      position: absolute;
+      min-height: 100%;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      background: hsla(0, 0%, 100%, .9);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .3s, visibility 0s .3s
+    }
+
+    .body__preloader:after {
+      display: block;
+      content: "";
+      position: absolute;
+      border: 2px solid rgba(0, 0, 0, .1);
+      border-top-color: rgba(0, 0, 0, .5);
+      transition: border-color .1s;
+      animation-name: a;
+      animation-duration: .5s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      left: calc(50% - 50px);
+      top: calc(50% - 50px);
+      width: 100px;
+      height: 100px;
+      border-radius: 50px
+    }
+
+    .body--loading .body__preloader {
+      transition-delay: 0s, 0s;
+      opacity: 1;
+      visibility: visible
+    }
+  </style>
+</head>
+
+<body class="body--loading">
+  <div class="body__preloader"></div>
+  {% include 'customer/include/mobile_menu.html' %}
+  <!-- site -->
+  <div class="site">
+    {% include 'customer/include/mobile_site_header.html' %}
+    {% include 'customer/include/desktop_site_header.html' %}
+    {% include 'customer/include/product_detail_modal.html' %}
+    {% block content %}{% endblock %}
+    {% include 'customer/include/footer.html' %}
+    {% block javascript %}{% endblock %}
+  </div>
+  <!-- site / end -->
+  <script>
+    $(document).ready(function () {
+      $("body").removeClass("body--loading");
+    })
+  </script>
+  <!-- Load Facebook SDK for JavaScript -->
+  <div id="fb-root"></div>
+  <script>
+    window.fbAsyncInit = function () {
+      FB.init({
+        xfbml: true,
+        version: 'v5.0'
+      });
+    };
+
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+  <!-- Your customer chat code -->
+  <div class="fb-customerchat"
+    attribution=setup_tool
+    page_id="110878133657816"
+    theme_color="#ffd333"
+    logged_in_greeting="Сайн байна уу? Бид танд хэрхэн туслах вэ?"
+    logged_out_greeting="Сайн байна уу? Бид танд хэрхэн туслах вэ?">
+  </div>
+</body>
+
+</html>

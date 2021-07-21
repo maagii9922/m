@@ -1,0 +1,113 @@
+{% extends 'employee/core/base.html' %}
+{% load static i18n bootstrap4 %}
+
+{% block content %}
+<div class="content-body">
+  <div class="container pd-x-0">
+
+    {% include 'employee/promotion/wizard/header.html' %}
+    <form id="promotionForm"
+      method="POST"
+      enctype="multipart/form-data">
+      {% csrf_token %}
+      <div id="wizard"
+        role="application"
+        class="wizard clearfix">
+        {% include 'employee/promotion/wizard/steps.html' %}
+        <div class="content clearfix">
+          <h3>Авах бүтээгдэхүүн</h3>
+          <section id="wizard-p-0"
+            role="tabpanel"
+            aria-labelledby="wizard-h-0"
+            class="body current"
+            aria-hidden="false">
+            {{ wizard.management_form }}
+            {% if wizard.form.forms %}
+            {{ wizard.form.management_form }}
+            <table class="table">
+              {% for form in wizard.form.forms %}
+              {% if forloop.first %}
+              <thead>
+                <tr>
+                  {% for field in form.visible_fields %}
+                  <th>{{ field.label|capfirst }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              {% endif %}
+              <tr class="formset_row">
+                {% for field in form.visible_fields %}
+                <td>
+                  {# Include the hidden fields in the form #}
+                  {% if forloop.first %}
+                  {% for hidden in form.hidden_fields %}
+                  {{ hidden }}
+                  {% endfor %}
+                  {% endif %}
+                  {% if not forloop.last %}
+                  {% bootstrap_field field show_label=False %}
+                  {% else %}
+                  {{ field }}
+                  {% endif %}
+                </td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </table>
+            {% else %}
+            {% bootstrap_form wizard.form layout="horizontal" %}
+            {% endif %}
+          </section>
+        </div>
+        {% include 'employee/promotion/wizard/buttons.html' %}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.min.js"></script>
+<script>
+  $(document).ready(function () {
+
+    $(".formset_row").formset({
+      addText: "Бүтээгдэхүүн нэмэх",
+      deleteText: "Устгах",
+      prefix: "promotion_type_acc",
+      added: function (row) {
+        $(row.find(".select2")).each(function () {
+          url = $(this).attr("data-ajax--url");
+          $(this).select2({
+            ajax: {
+              url: url,
+              data: function (params) {
+                return {
+                  term: params.term,
+                  page: params.page
+                };
+              }
+            },
+            width: "100%"
+          });
+        });
+      }
+    });
+
+    $(".select2").each(function () {
+      var url = $(this).attr("data-ajax--url");
+      $(this).select2({
+        ajax: {
+          url: url,
+          data: function (params) {
+            return {
+              term: params.term,
+              page: params.page
+            };
+          }
+        },
+        width: "100%"
+      });
+    });
+  })
+</script>
+{% endblock %}

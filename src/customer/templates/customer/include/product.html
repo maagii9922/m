@@ -1,0 +1,69 @@
+{% load static humanize %}
+
+<div class="product-card">
+  <button data-href="{% url 'customer-product-quick-view' product.id %}"
+    class="product-card__quickview"
+    type="button">
+    <svg width="16px"
+      height="16px">
+      <use xlink:href="{% static 'customer/images/sprite.svg' %}#quickview-16"></use>
+    </svg>
+    <span class="fake-svg-icon"></span>
+  </button>
+  <!-- <div class="product-card__badges-list">
+    <div class="product-card__badge product-card__badge--new">New</div>
+  </div> -->
+  <div class="product-card__image">
+    <a href="{% url 'customer-product-detail' product.id %}">
+      <img src="{{ product.image }}"
+        alt="{{ product.name }}">
+    </a>
+  </div>
+  <div class="product-card__info">
+    <div class="product-card__name">
+      <a href="{% url 'customer-product-detail' product.id %}">
+        {{ product.name }}
+      </a>
+    </div>
+    <ul class="product-card__features-list">
+      <li>Үйлдвэрлэгч: {{ product.manufacturer }}</li>
+      <li>Нийлүүлэгч: {{ product.seller }}</li>
+      <li>Хэмжих нэгж: {{ product.measuring_type }}</li>
+      <li>Хэлбэр: {{ product.form }}</li>
+    </ul>
+  </div>
+  <div class="product-card__actions">
+    <div class="product-card__availability">
+      {% if product.stock > 0 %}
+      <span class="text-success">Нөөц байгаа</span>
+      {% else %}
+      <span class="text-danger">Нөөц дууссан</span>
+      {% endif %}
+    </div>
+    {% if not product.is_discounted %}
+    <div class="product-card__prices">{{ product.price|intcomma:False }}₮</div>
+    {% else %}
+    <div class="product-card__new-price">{{ product.discounted_price|intcomma:False }}₮</div>
+    <div class="product-card__old-price">{{ product.price|intcomma:False }}₮</div>
+    {% endif %}
+    <div class="product-card__buttons">
+      <button data-href="{% url 'cart_add_ajax' product.id %}"
+        class="btn btn-primary product-card__addtocart">Сагслах
+      </button>
+      <button data-href="{% url 'cart_add_ajax' product.id %}"
+        class="btn btn-secondary product-card__addtocart product-card__addtocart--list">
+        Сагслах
+      </button>
+      {% comment %}
+      <button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
+        type="button">
+        <svg width="16px"
+          height="16px">
+          <use xlink:href="{% static 'customer/images/sprite.svg' %}#wishlist-16"></use>
+        </svg>
+        <span class="fake-svg-icon fake-svg-icon--wishlist-16"></span>
+      </button>
+      {% endcomment %}
+    </div>
+  </div>
+</div>

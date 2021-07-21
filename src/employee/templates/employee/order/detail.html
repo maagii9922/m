@@ -1,0 +1,57 @@
+{% load humanize %}
+
+<div class="modal-body pd-20 pd-sm-40">
+  <a href=""
+    role="button"
+    class="close pos-absolute t-15 r-15"
+    data-dismiss="modal"
+    aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </a>
+
+  <div>
+    <h4>Захиалгын дэлгэрэнгүй</h4>
+    <div class="table-responsive mt-4">
+      <table class="table table-striped"
+        style="font-size:12px;">
+        <thead>
+          <tr>
+            <th>Нэр</th>
+            <th>Үндсэн үнэ</th>
+            <th>Хөнгөлөлт</th>
+            <th>Хөнгөлөлттэй үнэ</th>
+            <th>Захиалсан тоо</th>
+            <th>Баталгаажсан тоо</th>
+            <th>Нийт</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in object.order_products.all %}
+          <tr>
+            <td>{{ product }}</td>
+            <td>{{ product.price }}</td>
+            <td>
+              {% if product.discount %}
+              {{ product.discount }}
+              {% endif %}
+              {% if product.discount_package %}
+              , {{ product.discount_package }}
+              {% endif %}
+            </td>
+            <td>{{ product.discounted_price }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>{{ product.quantity_approved|default:'-' }}</td>
+            <td>{{ product.total }}</td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="3"></td>
+            <td></td>
+            <td colspan=""><b>НИЙТ ДҮН:</b></td>
+            <td colspan="2"><b>{{ object.get_total_price|intcomma:False }}₮</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,176 @@
+{% extends 'employee/core/base.html' %}
+
+{% load filter_tags table_tags %}
+
+{% block content %}
+<div class="content-body">
+  <div class="container pd-x-0">
+    <div class="d-sm-flex align-items-center justify-content-between mg-b-20 mg-lg-b-25 mg-xl-b-30">
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-style3 mg-b-10">
+            {% for breadcrumb, link in breadcrumbs %}
+            {% if not forloop.last %}
+            <li class="breadcrumb-item">
+              <a href="{{ link }}">{{ breadcrumb }}</a>
+            </li>
+            {% else %}
+            <li class="breadcrumb-item active">{{ breadcrumb }}</li>
+            {% endif %}
+            {% endfor %}
+          </ol>
+        </nav>
+        <h4 class="mg-b-0 tx-spacing--1">{{ page_title }}</h4>
+      </div>
+    </div>
+    <div class="row row-xs">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="table-responsive">
+            <table class="table tx-12">
+              <thead>
+                {% headers posts fields %}
+              </thead>
+              <tbody>
+                <tr>
+                  <form method="GET">
+                    <td>~</td>
+                    <td>
+                      <input type="text"
+                        name=""
+                        id=""
+                        class="form-control form-control-sm">
+                    </td>
+                    <td>
+                      <input type="text"
+                        name=""
+                        id=""
+                        class="form-control form-control-sm">
+                    </td>
+                    <td>
+                      <input type="text"
+                        name=""
+                        id=""
+                        class="form-control form-control-sm">
+                    </td>
+                    <td>
+                      <input type="text"
+                        name=""
+                        id=""
+                        class="form-control form-control-sm">
+                    </td>
+                    <td>
+                      <input type="text"
+                        name=""
+                        id=""
+                        class="form-control form-control-sm">
+                    </td>
+                    <td class="text-nowrap">
+                      <button type="submit"
+                        class="btn btn-white btn-sm btn-uppercase">
+                        <i data-feather="search"></i>
+                        Хайх
+                      </button>
+                      <button type="button"
+                        onclick="clearSearchFunction()"
+                        class="btn btn-white btn-sm btn-uppercase">
+                        <i data-feather="x"></i>
+                        Цэвэрлэх
+                      </button>
+                    </td>
+                  </form>
+                </tr>
+                {% for post in posts %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ post.category }}</td>
+                  <td>{{ post.title }}</td>
+                  <td>{{ post.author }}</td>
+                  <td>{{ post.updated_at }}</td>
+                  <td>
+                    {% if post.is_published %}
+                    <div class="badge badge-success">Нийтлэгдсэн</div>
+                    {% else %}
+                    <div class="badge badge-warning">Ноорог</div>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <div class="dropdown">
+                      <button class="btn btn-white btn-xs dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        <i data-feather="settings"></i>
+                        Тохиргоо
+                      </button>
+                      <div class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item"
+                          href="{% url 'employee-post-update' post.id %}">
+                          Хандах эрх
+                        </a>
+                        <a class="dropdown-item"
+                          href="{% url 'employee-post-delete' post.id %}">Засах</a>
+                        <a class="dropdown-item"
+                          href="#">Устгах</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="100">Жагсаалт хоосон байна</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<!-- <script>
+  (function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+      define('/advanced/bootbox-sweetalert', ['jquery', 'Site'], factory);
+    } else if (typeof exports !== "undefined") {
+      factory(require('jquery'), require('Site'));
+    } else {
+      var mod = {
+        exports: {}
+      };
+      factory(global.jQuery, global.Site);
+      global.advancedBootboxSweetalert = mod.exports;
+    }
+  })(this, function (_jquery, _Site) {
+    'use strict';
+
+    var _jquery2 = babelHelpers.interopRequireDefault(_jquery);
+
+    (function () {
+      (0, _jquery2.default)('.delete-confirm').on("click", function () {
+        var href = $(this).attr("data-href");
+
+        swal({
+          title: "Нийтлэл утсгах уу?",
+          text: "",
+          type: "warning",
+          showCancelButton: true,
+          cancelButtonText: "Үгүй",
+          confirmButtonClass: "btn-warning",
+          confirmButtonText: 'Тийм',
+          closeOnConfirm: false
+        }, function () {
+          window.location = href;
+        });
+      });
+
+    })();
+  });
+</script> -->
+{% endblock %}

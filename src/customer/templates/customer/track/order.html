@@ -1,0 +1,191 @@
+{% extends 'customer/base.html' %}
+
+{% load static humanize %}
+
+{% block content %}
+<!-- quickview-modal -->
+<div id="orderDetailModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content"></div>
+  </div>
+</div>
+<!-- quickview-modal / end -->
+<div class="site__body">
+  <div class="page-header">
+    <div class="page-header__container container">
+      <div class="page-header__breadcrumb">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'customer-home' %}">Нүүр хуудас</a>
+              <svg class="breadcrumb-arrow"
+                width="6px"
+                height="9px">
+                <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-right-6x9">
+                </use>
+              </svg>
+            </li>
+            <li class="breadcrumb-item active"
+              aria-current="page">Захиалга хянах</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="page-header__title">
+        <h1>Захиалга хянах</h1>
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="container">
+      <div class="row">
+        {% for message in messages %}
+        <div class="col-12">
+          <div class="alert alert-success alert-lg mb-3 alert-dismissible fade show">
+            {{ message }}
+            <button type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close">
+              <svg width="12px"
+                height="12px">
+                <use xlink:href="{% static 'customer/images/sprite.svg' %}#cross-12"></use>
+              </svg>
+            </button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="row">
+        <div class="col-12 col-lg-3 d-flex">
+          <div class="account-nav flex-grow-1">
+            <h4 class="account-nav__title">Захиалгын төлөв</h4>
+            <ul>
+              {% url 'customer-track-order' as url %}
+              <li class="account-nav__item 
+              {% ifequal url request.path  %} 
+              account-nav__item--active
+              {% endifequal %}">
+                <a href="{{ url }}">Бүгд</a>
+              </li>
+              {% for key, item in status.items %}
+              {% url 'customer-track-order' key as url %}
+              <li class="account-nav__item 
+              {% ifequal url request.path  %} 
+              account-nav__item--active
+              {% endifequal %}
+                ">
+                <a href="{{ url }}">{{ item }}</a>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="col-12 col-lg-9 mt-4 mt-lg-0">
+          <div class="card">
+            <div class="card-header">
+              <h5>Захиалгын түүх</h5>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-table">
+              <div class="table-responsive-sm">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Захиалгын дугаар</th>
+                      <th>Огноо</th>
+                      <th>Төлөв</th>
+                      <th>Нийт дүн</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for obj in object_list %}
+                    <tr>
+                      <td>
+                        <a href="javascript:;"
+                          data-href="{% url 'customer-track-order-detail' obj.id %}"
+                          class="orderDetail">
+                          #{{ obj.id }}
+                        </a>
+                      </td>
+                      <td>{{ obj.created_at }}</td>
+                      <td>{{ obj.get_status_display }}</td>
+                      <td>{{ obj.get_total_price|intcomma:False }}₮</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                      <td colspan="100">жагсаалт хоосон байна</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card-divider"></div>
+            {% if is_paginated %}
+            <div class="card-footer">
+              <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link page-link--with-arrow"
+                    href="?page={{ page_obj.previous_page_number }}"
+                    aria-label="Previous">
+                    <svg class="page-link__arrow page-link__arrow--left"
+                      aria-hidden="true"
+                      width="8px"
+                      height="13px">
+                      <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-left-8x13"></use>
+                    </svg>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link"
+                    href="?page={{ page_obj.previous_page_number }}">
+                    {{ page_obj.previous_page_number }}
+                  </a>
+                </li>
+                {% endif %}
+                <li class="page-item active">
+                  <a class="page-link"
+                    href="">{{ page_obj.number }} <span class="sr-only">(current)</span></a>
+                </li>
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                  <a class="page-link"
+                    href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link page-link--with-arrow"
+                    href="?page={{ page_obj.next_page_number }}"
+                    aria-label="Next">
+                    <svg class="page-link__arrow page-link__arrow--right"
+                      aria-hidden="true"
+                      width="8px"
+                      height="13px">
+                      <use xlink:href="{% static 'customer/images/sprite.svg' %}#arrow-rounded-right-8x13"></use>
+                    </svg>
+                  </a>
+                </li>
+                {% endif %}
+              </ul>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script>
+  $(document).on("click", ".orderDetail", function () {
+    const url = $(this).attr("data-href")
+    $("#orderDetailModal .modal-content").load(url);
+    $("#orderDetailModal").modal("show");
+  })
+</script>
+{% endblock %}

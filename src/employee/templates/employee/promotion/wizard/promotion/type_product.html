@@ -1,0 +1,107 @@
+{% extends 'employee/core/base.html' %}
+{% load static i18n bootstrap4 %}
+
+{% block content %}
+<div class="content-body">
+  <div class="container pd-x-0">
+
+    {% include 'employee/promotion/wizard/header.html' %}
+    <form id="promotionForm"
+      method="POST"
+      enctype="multipart/form-data">
+      {% csrf_token %}
+      <div id="wizard"
+        role="application"
+        class="wizard clearfix">
+        {% include 'employee/promotion/wizard/steps.html' %}
+        <div class="content clearfix">
+          <section id="wizard-p-0"
+            role="tabpanel"
+            aria-labelledby="wizard-h-0"
+            class="body current"
+            aria-hidden="false">
+            {{ wizard.management_form }}
+            {% if wizard.form.forms %}
+            {{ wizard.form.management_form }}
+            {% for form in wizard.form.forms %}
+            {{ form.media }}
+            {% bootstrap_form form layout="horizontal" %}
+            {% endfor %}
+            {% else %}
+            {{ wizard.form.media }}
+            {% bootstrap_form wizard.form layout="horizontal" %}
+            {% endif %}
+          </section>
+        </div>
+        {% include 'employee/promotion/wizard/buttons.html' %}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script>
+  $(document).ready(function () {
+
+    typeProduct();
+
+    $("#id_promotion_type_product-promotion_implement_type").on("change", function () {
+      typeProduct();
+    })
+  })
+
+  const typeProduct = () => {
+    var value = document.getElementById("id_promotion_type_product-promotion_implement_type").value;
+    if (value === "1") {
+      document.getElementById("id_promotion_type_product-percent").readOnly = false;
+      document.getElementById("id_promotion_type_product-percent").required = true;
+      document.getElementById("id_promotion_type_product-price").value = null;
+      document.getElementById("id_promotion_type_product-price").readOnly = true;
+      document.getElementById("id_promotion_type_product-price").required = false;
+      document.getElementById("id_promotion_type_product-above_the_number").value = null;
+      document.getElementById("id_promotion_type_product-above_the_number").readOnly = true;
+      document.getElementById("id_promotion_type_product-above_the_number").required = false;
+      document.getElementById("id_promotion_type_product-above_the_number_percent").value = null;
+      document.getElementById("id_promotion_type_product-above_the_number_percent").readOnly = true;
+      document.getElementById("id_promotion_type_product-above_the_number_percent").required = false;
+    } else if (value === "2") {
+      document.getElementById("id_promotion_type_product-percent").value = null;
+      document.getElementById("id_promotion_type_product-percent").readOnly = true;
+      document.getElementById("id_promotion_type_product-percent").required = false;
+      document.getElementById("id_promotion_type_product-price").readOnly = false;
+      document.getElementById("id_promotion_type_product-price").required = true;
+      document.getElementById("id_promotion_type_product-above_the_number").value = null;
+      document.getElementById("id_promotion_type_product-above_the_number").readOnly = true;
+      document.getElementById("id_promotion_type_product-above_the_number").required = false;
+      document.getElementById("id_promotion_type_product-above_the_number_percent").value = null;
+      document.getElementById("id_promotion_type_product-above_the_number_percent").readOnly = true;
+      document.getElementById("id_promotion_type_product-above_the_number_percent").required = false;
+    } else if (value === "3") {
+      document.getElementById("id_promotion_type_product-percent").value = null;
+      document.getElementById("id_promotion_type_product-percent").readOnly = true;
+      document.getElementById("id_promotion_type_product-percent").required = false;
+      document.getElementById("id_promotion_type_product-price").value = null;
+      document.getElementById("id_promotion_type_product-price").readOnly = true;
+      document.getElementById("id_promotion_type_product-price").required = false;
+      document.getElementById("id_promotion_type_product-above_the_number").readOnly = false;
+      document.getElementById("id_promotion_type_product-above_the_number").required = true;
+      document.getElementById("id_promotion_type_product-above_the_number_percent").readOnly = false;
+      document.getElementById("id_promotion_type_product-above_the_number_percent").required = true;
+    } else {
+      document.getElementById("id_promotion_type_product-percent").value = null;
+      document.getElementById("id_promotion_type_product-percent").readOnly = true;
+      document.getElementById("id_promotion_type_product-percent").required = false;
+      document.getElementById("id_promotion_type_product-price").value = null;
+      document.getElementById("id_promotion_type_product-price").readOnly = true;
+      document.getElementById("id_promotion_type_product-price").required = false;
+      document.getElementById("id_promotion_type_product-above_the_number").value = null;
+      document.getElementById("id_promotion_type_product-above_the_number").readOnly = true;
+      document.getElementById("id_promotion_type_product-above_the_number").required = false;
+      document.getElementById("id_promotion_type_product-above_the_number_percent").value = null;
+      document.getElementById("id_promotion_type_product-above_the_number_percent").readOnly = true;
+      document.getElementById("id_promotion_type_product-above_the_number_percent").required = false;
+    }
+  }
+
+</script>
+{% endblock %}

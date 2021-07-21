@@ -1,0 +1,123 @@
+{% load humanize %}
+<div id="alertMessage"></div>
+{% if cart.check_order %}
+<div class="alert alert-danger">
+  Сагсан дахь барааны нөөц хүрэхгүй байна
+</div>
+{% endif %}
+{% for message in messages %}
+<div class="alert alert-danger">
+  {{ message }}
+</div>
+{% endfor %}
+<table class="table table-sm"
+  style="font-size: 12px;">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Нэр</th>
+      <th>Үндсэн үнэ</th>
+      <th>Хөнгөлөлт</th>
+      <th>Хөнгөлөлттэй үнэ</th>
+      <th>Тоо</th>
+      <th>Нийт</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in cart %}
+    <tr {% if product.check_order %}style="background-color:#ffb8b8;{% endif %}">
+      <td>{{ forloop.counter }}</td>
+      <td>
+        <a href="{% url 'customer-product-detail' product.id %}"
+          class="cart-table__product-name">
+          {{ product.name }}
+        </a>
+      </td>
+      <td>{{ product.price|intcomma:False }} ₮</td>
+      <td>
+        {% if product.discount and product.discount_package %}
+        {{ product.discount }}, {{ product.discount_package }}
+        {% elif product.discount %}
+        {{ product.discount }}
+        {% elif product.discount_package %}
+        {{ product.discount_package }}
+        {% endif %}
+      </td>
+      <td>{{ product.discounted_price|intcomma:False }} ₮</td>
+      <td class="cart-table__column cart-table__column--quantity"
+        data-title="Quantity">
+        <div class="input-number">
+          <input type="number"
+            name="quantity"
+            value="{{ product.quantity }}"
+            class="input-number__input form-control"
+            required=""
+            data-href="{% url 'cart_update_ajax' product.id %}"
+            min="1">
+          <!-- <div class="input-number__add"></div>
+          <div class="input-number__sub"></div> -->
+        </div>
+      </td>
+      <td>{{ product.total|intcomma:False }} ₮</td>
+      <td class="cart-table__column cart-table__column--remove">
+        <button data-href="{% url 'cart_remove' product.id %}"
+          class="orderProductRemove btn btn-light btn-sm btn-svg-icon">
+          <i class="fa fa-times"></i>
+        </button>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="8">жагсаалт хоосон байна</td>
+    </tr>
+    {% endfor %}
+    {% for promotion_product in cart.get_acc_promotion_products %}
+    {% if forloop.first %}
+    <tr>
+      <td></td>
+      <td colspan="7"><b>Урамшууллын бүтээгдэхүүн</b></td>
+    </tr>
+    {% endif %}
+    <tr>
+      <td>{{ forloop.counter }}</td>
+      <td>
+        <a href="{% url 'customer-product-detail' promotion_product.product.id %}"
+          class="cart-table__product-name">
+          {{ promotion_product.product.name }}
+        </a>
+      </td>
+      <td>0₮</td>
+      <td>0%</td>
+      <td>0₮</td>
+      <td>{{ promotion_product.quantity }}ш</td>
+      <td>0₮</td>
+      <td></td>
+    </tr>
+    {% endfor %}
+    <tr style="font-size: 18px; font-weight: bold;">
+      <td colspan="5"></td>
+      <td>Нийт дүн:</td>
+      <td>{{ cart.get_total_price|intcomma:False }}₮</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="cart__actions">
+  <form class="cart__coupon-form"></form>
+  <div class="">
+    <a href="{% url 'cart_clear' %}"
+      class="btn btn-secondary">Хоослох</a>
+    <button id="productAddButton"
+      href="#"
+      class="btn btn-primary cart__update-button">
+      Бүтээгдэхүүн нэмэх
+    </button>
+    <button
+      id="{% if cart.check_order %}alertOrder{% elif cart|length == 0 %}alertEmptyOrder{%else%}createOrder{% endif %}"
+      class="btn btn-success cart__update-button">
+      Захиалга хийх
+    </button>
+  </div>
+</div>
